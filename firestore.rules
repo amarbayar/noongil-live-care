@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Deny all by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User data — owner access only
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Check-ins
+      match /checkins/{checkinId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Medications
+      match /medications/{medId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Memory
+      match /memory/{memId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // FCM tokens
+      match /fcm_tokens/{tokenId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Caregiver relationships — owner can write, caregiver can read
+      match /caregiver_relationships/{relId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+        allow read: if request.auth != null
+          && resource.data.caregiverId == request.auth.uid
+          && resource.data.status == 'active';
+      }
+
+      // Custom reminders
+      match /custom_reminders/{reminderId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Check-in sessions
+      match /checkin_sessions/{sessionId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Catch-all for any sub-collections not listed above
+      match /{subcollection}/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

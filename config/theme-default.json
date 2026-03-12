@@ -1,0 +1,43 @@
+{
+  "name": "Calm",
+  "colors": {
+    "background": "#F8FAFC",
+    "surface": "#FFFFFF",
+    "primary": "#2563EB",
+    "secondary": "#059669",
+    "accent": "#0EA5E9",
+    "text": "#1E293B",
+    "textSecondary": "#64748B",
+    "success": "#059669",
+    "warning": "#D97706",
+    "error": "#DC2626",
+    "orbGlow": "#2563EB",
+    "orbIdle": "#059669",
+    "orbGold": "#0EA5E9",
+    "ambientMorning": "#EFF6FF",
+    "ambientEvening": "#F0FDF4",
+    "auroraPurple": "#93C5FD",
+    "auroraTeal": "#6EE7B7",
+    "auroraPink": "#BAE6FD"
+  },
+  "typography": {
+    "titleSize": 28,
+    "bodySize": 18,
+    "captionSize": 14
+  },
+  "animation": {
+    "orbPulseSpeed": 2.0,
+    "transitionDuration": 0.3
+  },
+  "glass": {
+    "borderWidth": 1,
+    "glowRadius": 0,
+    "glowOpacity": 0,
+    "shadowRadius": 12,
+    "shadowOffsetY": 4,
+    "shadowOpacity": 0.08,
+    "specularOpacity": 0,
+    "animationSpeed": 12.0,
+    "backgroundOpacity": 1.0
+  }
+}

@@ -1,0 +1,3114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noongil — Wellness Insights</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='45%25' r='55%25'%3E%3Cstop offset='0%25' stop-color='%23dbeafe'/%3E%3Cstop offset='55%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%230f766e'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%23f8fafc'/%3E%3Ccircle cx='32' cy='32' r='20' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   Layer 1 — Design Tokens
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Color Primitives: Slate ── */
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+
+  /* ── Color Primitives: Blue ── */
+  --blue-50:  #EFF6FF;
+  --blue-100: #DBEAFE;
+  --blue-200: #BFDBFE;
+  --blue-400: #60A5FA;
+  --blue-500: #3B82F6;
+  --blue-600: #2563EB;
+  --blue-700: #1D4ED8;
+
+  /* ── Color Primitives: Violet ── */
+  --violet-50:  #F5F3FF;
+  --violet-100: #EDE9FE;
+  --violet-400: #A78BFA;
+  --violet-500: #8B5CF6;
+  --violet-600: #7C3AED;
+
+  /* ── Color Primitives: Teal ── */
+  --teal-50:  #F0FDFA;
+  --teal-100: #CCFBF1;
+  --teal-400: #2DD4BF;
+  --teal-500: #14B8A6;
+  --teal-600: #0D9488;
+  --teal-700: #0F766E;
+
+  /* ── Color Primitives: Red ── */
+  --red-50:  #FEF2F2;
+  --red-100: #FEE2E2;
+  --red-400: #F87171;
+  --red-500: #EF4444;
+  --red-600: #DC2626;
+
+  /* ── Color Primitives: Amber ── */
+  --amber-50:  #FFFBEB;
+  --amber-100: #FEF3C7;
+  --amber-400: #FBBF24;
+  --amber-500: #F59E0B;
+  --amber-600: #D97706;
+
+  /* ── Semantic: Surfaces & Text ── */
+  --color-bg:             var(--slate-50);
+  --color-surface:        #FFFFFF;
+  --color-raised:         var(--slate-100);
+  --color-text:           var(--slate-800);
+  --color-text-secondary: var(--slate-500);
+  --color-text-dim:       var(--slate-400);
+
+  /* ── Semantic: Borders ── */
+  --color-border:       rgba(30, 41, 59, 0.08);
+  --color-border-focus: rgba(30, 41, 59, 0.20);
+
+  /* ── Semantic: Category Colors ── */
+  --color-mood:     var(--blue-600);
+  --color-sleep:    var(--violet-600);
+  --color-med:      var(--teal-700);
+  --color-symptom:  var(--red-600);
+  --color-trigger:  var(--amber-600);
+  --color-activity: var(--teal-500);
+
+  /* ── Semantic: Category Tints ── */
+  --color-mood-bg:     var(--blue-50);
+  --color-sleep-bg:    var(--violet-50);
+  --color-med-bg:      var(--teal-50);
+  --color-symptom-bg:  var(--red-50);
+  --color-trigger-bg:  var(--amber-50);
+  --color-activity-bg: var(--teal-50);
+
+  /* ── Shadows ── */
+  --shadow-xs: 0 1px 2px rgba(30, 41, 59, 0.04);
+  --shadow-sm: 0 2px 8px rgba(30, 41, 59, 0.06), 0 1px 2px rgba(30, 41, 59, 0.04);
+  --shadow-md: 0 4px 12px rgba(30, 41, 59, 0.08), 0 2px 4px rgba(30, 41, 59, 0.04);
+  --shadow-lg: 0 8px 24px rgba(30, 41, 59, 0.10), 0 4px 8px rgba(30, 41, 59, 0.05);
+
+  /* ── Glass ── */
+  --glass-bg:     rgba(255, 255, 255, 0.84);
+  --glass-border: rgba(30, 41, 59, 0.08);
+  --glass-blur:   16px;
+
+  /* ── Radii ── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-full: 999px;
+
+  /* ── Spacing ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+
+  /* ── Easing ── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Z-Index ── */
+  --z-base:    1;
+  --z-nav:     10;
+  --z-modal:   50;
+  --z-overlay: 100;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dark Theme — Semantic Token Remap
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --color-bg:             #0B0F1A;
+  --color-surface:        #141927;
+  --color-raised:         #1C2236;
+  --color-text:           #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-dim:       #475569;
+
+  --color-border:       rgba(148, 163, 184, 0.12);
+  --color-border-focus: rgba(148, 163, 184, 0.24);
+
+  --color-mood-bg:     rgba(37, 99, 235, 0.12);
+  --color-sleep-bg:    rgba(124, 58, 237, 0.12);
+  --color-med-bg:      rgba(15, 118, 110, 0.12);
+  --color-symptom-bg:  rgba(220, 38, 38, 0.12);
+  --color-trigger-bg:  rgba(217, 119, 6, 0.12);
+  --color-activity-bg: rgba(20, 184, 166, 0.12);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.20);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.16);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.28), 0 2px 4px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.32), 0 4px 8px rgba(0, 0, 0, 0.20);
+
+  --glass-bg:     rgba(20, 25, 39, 0.80);
+  --glass-border: rgba(148, 163, 184, 0.10);
+  --glass-blur:   20px;
+}
+
+[data-theme="dark"] body::before {
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 25%, rgba(37, 99, 235, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(15, 118, 110, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 15%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Layer 2 — Utility Classes
+   ═══════════════════════════════════════════════════════════════ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.flex          { display: flex; }
+.flex-col      { display: flex; flex-direction: column; }
+.items-center  { align-items: center; }
+.justify-between { justify-content: space-between; }
+
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+
+.text-xs  { font-size: 11px; }
+.text-sm  { font-size: 12px; }
+.text-base { font-size: 14px; }
+.text-lg  { font-size: 16px; }
+.text-xl  { font-size: 20px; }
+.text-2xl { font-size: 28px; }
+
+.font-light    { font-weight: 300; }
+.font-normal   { font-weight: 400; }
+.font-medium   { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold     { font-weight: 700; }
+
+.rounded-sm   { border-radius: var(--radius-sm); }
+.rounded-md   { border-radius: var(--radius-md); }
+.rounded-lg   { border-radius: var(--radius-lg); }
+.rounded-xl   { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+.shadow-xs { box-shadow: var(--shadow-xs); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transition { transition: all 0.2s var(--ease-out); }
+
+.grid { display: grid; }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.full-width  { grid-column: 1 / -1; }
+.n-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+@media (max-width: 639px) { .n-grid { grid-template-columns: 1fr; } }
+.hidden      { display: none; }
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* ═══════════════════════════════════════════════════════════════
+   Layer 3 — Component Classes (BEM-lite, n- prefix)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Base: Body & App Shell ── */
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  min-height: 100vh;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 25%, rgba(147, 197, 253, 0.30) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(110, 231, 183, 0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 50% 15%, rgba(186, 230, 253, 0.20) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.6s;
+}
+
+.n-app {
+  position: relative;
+  z-index: var(--z-base);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+/* ── n-header ── */
+.n-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--space-5);
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 18px;
+}
+
+.n-header__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.n-header__logo {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.n-header__subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.n-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.n-header__session {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.n-header__session img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
+
+/* ── n-filters ── */
+.n-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-md);
+}
+
+.n-filters--signed-out {
+  justify-content: space-between;
+}
+
+.n-filters__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 240px;
+}
+
+.n-filters__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.n-filters__subtitle {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.n-filters__field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.n-filters__field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── n-card ── */
+.n-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  animation: n-card-in 0.4s var(--ease-out) both;
+}
+
+.n-card:nth-child(1)  { animation-delay: 0.00s; }
+.n-card:nth-child(2)  { animation-delay: 0.06s; }
+.n-card:nth-child(3)  { animation-delay: 0.12s; }
+.n-card:nth-child(4)  { animation-delay: 0.18s; }
+.n-card:nth-child(5)  { animation-delay: 0.24s; }
+.n-card:nth-child(6)  { animation-delay: 0.30s; }
+
+.n-card--glass {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.n-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.n-card__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.n-card__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.n-card__subtitle {
+  font-size: 11px;
+  color: var(--color-text-dim);
+  margin-top: 1px;
+}
+
+/* ── n-btn ── */
+.n-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  min-height: 44px;
+  transition: all 0.18s var(--ease-out);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-btn:active {
+  transform: scale(0.97);
+}
+
+.n-btn--primary {
+  background: linear-gradient(135deg, var(--blue-600), var(--teal-700));
+  color: #FFFFFF;
+  border: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.n-btn--primary:hover {
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.05);
+}
+
+.n-btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.n-btn--secondary:hover {
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-sm);
+}
+
+.n-btn--danger {
+  background: none;
+  color: var(--red-600);
+  border: 1px solid var(--color-border);
+}
+
+.n-btn--danger:hover {
+  background: var(--color-symptom-bg);
+  border-color: rgba(220, 38, 38, 0.20);
+}
+
+.n-btn--icon {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.n-btn--icon:hover {
+  border-color: var(--color-border-focus);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.n-btn--icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── n-nav ── */
+.n-nav {
+  display: none;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.n-nav::-webkit-scrollbar { display: none; }
+
+.n-nav.active {
+  display: flex;
+}
+
+.n-nav__pill {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: var(--glass-bg);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  min-height: 44px;
+  white-space: nowrap;
+  transition: all 0.2s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-nav__pill:active {
+  transform: scale(0.97);
+}
+
+.n-nav__pill.active {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(15, 118, 110, 0.14));
+  color: var(--color-text);
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+[data-theme="dark"] .n-nav__pill.active {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(15, 118, 110, 0.22));
+  border-color: rgba(37, 99, 235, 0.36);
+}
+
+/* ── n-input ── */
+.n-input,
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 12px 14px;
+  min-height: 48px;
+  outline: none;
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  -webkit-appearance: none;
+}
+
+.n-input:focus,
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+input[type="text"] { width: 160px; }
+input[type="date"] { width: 160px; }
+
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.n-lang-select {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ── n-badge ── */
+.n-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.n-badge--strong {
+  background: rgba(220, 38, 38, 0.10);
+  color: var(--color-symptom);
+}
+
+.n-badge--moderate {
+  background: rgba(217, 119, 6, 0.10);
+  color: var(--color-trigger);
+}
+
+.n-badge--weak {
+  background: rgba(15, 118, 110, 0.10);
+  color: var(--color-med);
+}
+
+/* ── n-pill (info pill) ── */
+.n-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .n-pill {
+  background: rgba(28, 34, 54, 0.80);
+  border-color: rgba(148, 163, 184, 0.16);
+}
+
+.n-pill strong {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ── n-sparkline ── */
+.n-sparkline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.n-sparkline:last-child {
+  border-bottom: none;
+}
+
+.n-sparkline__label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.n-sparkline__canvas {
+  flex: 1;
+  height: 36px;
+}
+
+.n-sparkline__value {
+  font-size: 13px;
+  font-weight: 500;
+  width: 48px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── n-heatmap ── */
+.n-heatmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 14px);
+  gap: 3px;
+}
+
+.n-heatmap__cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--color-raised);
+  border: 1px solid var(--color-border);
+  transition: background-color 0.15s;
+}
+
+.n-heatmap__cell--filled {
+  background: var(--color-mood);
+  border-color: transparent;
+}
+
+.n-heatmap__cell--empty {
+  background: var(--color-raised);
+}
+
+.n-heatmap__cell--missing {
+  background: rgba(217, 119, 6, 0.18);
+  border-color: rgba(217, 119, 6, 0.24);
+}
+
+/* ── n-graph-* ── */
+.n-graph-card {
+  grid-column: 1 / -1;
+  overflow: hidden;
+}
+
+.n-graph-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.n-graph-intro__copy {
+  max-width: 720px;
+}
+
+.n-graph-intro__copy strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.n-graph-intro__copy span {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.n-graph-mode-toggle {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.n-graph-stage {
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.08), transparent 40%),
+    var(--color-raised);
+  border: 1px solid rgba(30, 41, 59, 0.06);
+  border-radius: 18px;
+  padding: 14px;
+  min-height: 560px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .n-graph-stage {
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(15, 118, 110, 0.10), transparent 40%),
+    var(--color-raised);
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+.n-graph-canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.82));
+}
+
+[data-theme="dark"] .n-graph-canvas {
+  background: linear-gradient(180deg, rgba(20, 25, 39, 0.95), rgba(11, 15, 26, 0.82));
+}
+
+.n-graph-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.95fr);
+  gap: 18px;
+  min-height: 560px;
+}
+
+.n-graph-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.n-graph-panel-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.n-graph-panel-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+}
+
+.n-graph-panel-card p {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.n-graph-selection-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.n-graph-selection-meta {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.n-graph-meta-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-raised);
+  color: var(--color-text-secondary);
+}
+
+.n-graph-callout-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.n-graph-callout {
+  border-left: 3px solid rgba(37, 99, 235, 0.24);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+[data-theme="dark"] .n-graph-callout {
+  background: rgba(28, 34, 54, 0.60);
+}
+
+.n-graph-callout strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-text);
+}
+
+.n-graph-callout span {
+  display: block;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.n-graph-legend {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.n-graph-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.n-graph-legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.n-graph-focus-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.n-graph-focus-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.n-graph-focus-chip {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s var(--ease-out);
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-graph-focus-chip:active {
+  transform: scale(0.97);
+}
+
+.n-graph-focus-chip.active {
+  border-color: rgba(37, 99, 235, 0.24);
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--color-mood);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+[data-theme="dark"] .n-graph-focus-chip.active {
+  background: rgba(37, 99, 235, 0.16);
+}
+
+.n-graph-empty {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-6);
+  color: var(--color-text-dim);
+  font-size: 13px;
+  line-height: 1.6;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.92));
+}
+
+[data-theme="dark"] .n-graph-empty {
+  background: linear-gradient(180deg, rgba(20, 25, 39, 0.8), rgba(11, 15, 26, 0.92));
+}
+
+/* ── n-care-plan-* ── */
+.n-care-plan-card {
+  grid-column: 1 / -1;
+}
+
+.n-care-plan-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.n-care-plan-column {
+  display: grid;
+  gap: 14px;
+}
+
+.n-care-plan-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  padding: var(--space-4);
+}
+
+.n-care-plan-panel h4 {
+  margin: 0 0 var(--space-3);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.n-care-plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.n-care-plan-medication-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.92);
+  padding: 12px 14px;
+}
+
+[data-theme="dark"] .n-care-plan-medication-row {
+  background: rgba(28, 34, 54, 0.60);
+}
+
+.n-care-plan-medication-row__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.n-care-plan-medication-row__note {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.n-care-plan-empty {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Reminder form & list ── */
+.n-reminder-list {
+  display: grid;
+  gap: 10px;
+}
+
+.n-reminder-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.92);
+  padding: 12px 14px;
+}
+
+[data-theme="dark"] .n-reminder-row {
+  background: rgba(28, 34, 54, 0.60);
+}
+
+.n-reminder-row__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.n-reminder-row__note {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.n-reminder-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.n-reminder-row__actions {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.n-reminder-form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.n-reminder-form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  gap: var(--space-3);
+}
+
+.n-reminder-form__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ── n-voice-* ── */
+.n-voice-card {
+  grid-column: 1 / -1;
+}
+
+.n-voice-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.n-voice-panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  padding: var(--space-4);
+}
+
+.n-voice-panel h4 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.n-voice-status {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
+.n-voice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.n-voice-meter {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.n-voice-note {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-top: var(--space-3);
+}
+
+/* ── n-loader ── */
+.n-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.n-loader__orb {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--blue-600),
+    var(--violet-500),
+    var(--teal-500),
+    var(--blue-600)
+  );
+  animation: n-orb-spin 1.2s linear infinite, n-pulse 2s ease-in-out infinite;
+}
+
+.n-loader__copy {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.n-loader__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.n-loader__subtitle {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.n-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(248, 250, 252, 0.70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  z-index: var(--z-overlay);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.n-overlay:not(.active) {
+  display: none;
+}
+
+[data-theme="dark"] .n-overlay {
+  background: rgba(11, 15, 26, 0.70);
+}
+
+/* ── n-skeleton ── */
+.n-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  width: 100%;
+}
+
+.n-skeleton__card {
+  min-height: 180px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(30, 41, 59, 0.06);
+  background: linear-gradient(110deg, rgba(241, 245, 249, 0.85) 8%, rgba(255, 255, 255, 0.95) 18%, rgba(241, 245, 249, 0.85) 33%);
+  background-size: 220% 100%;
+  animation: n-shimmer 1.5s linear infinite;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .n-skeleton__card {
+  border-color: rgba(148, 163, 184, 0.06);
+  background: linear-gradient(110deg, rgba(28, 34, 54, 0.85) 8%, rgba(20, 25, 39, 0.95) 18%, rgba(28, 34, 54, 0.85) 33%);
+  background-size: 220% 100%;
+}
+
+.n-skeleton__card--wide {
+  grid-column: 1 / -1;
+  min-height: 320px;
+}
+
+/* ── n-empty ── */
+.n-empty {
+  text-align: center;
+  padding: 80px var(--space-5);
+  grid-column: 1 / -1;
+}
+
+.n-empty__orb {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(37, 99, 235, 0.15), rgba(15, 118, 110, 0.08));
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  margin: 0 auto var(--space-4);
+  animation: n-pulse 4s ease-in-out infinite;
+}
+
+.n-empty__text {
+  font-size: 14px;
+  color: var(--color-text-dim);
+  line-height: 1.6;
+}
+
+.n-empty__text strong {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ── n-summary ── */
+.n-summary {
+  display: flex;
+  gap: var(--space-6);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 18px var(--space-5);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+.n-summary__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.n-summary__value {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.n-summary__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-dim);
+  font-weight: 500;
+}
+
+/* ── Consistency card ── */
+.n-consistency {
+  grid-column: 1 / -1;
+}
+
+.n-consistency__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.n-consistency__stat {
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--color-raised);
+  border: 1px solid rgba(30, 41, 59, 0.06);
+}
+
+[data-theme="dark"] .n-consistency__stat {
+  border-color: rgba(148, 163, 184, 0.08);
+}
+
+.n-consistency__value {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.n-consistency__label {
+  margin-top: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.n-consistency__note {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.n-consistency__missing-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.n-consistency__missing-pill {
+  padding: 7px 10px;
+  border-radius: var(--radius-full);
+  background: rgba(217, 119, 6, 0.10);
+  color: var(--color-trigger);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── Correlation items ── */
+.n-correlation {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.n-correlation:last-child { border-bottom: none; }
+
+.n-correlation__pair {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+
+.n-correlation__detail {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ── Trigger bars ── */
+.n-trigger-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.n-trigger-row__name {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  width: 100px;
+  flex-shrink: 0;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.n-trigger-row__bar-container {
+  flex: 1;
+  height: 20px;
+  background: var(--color-raised);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.n-trigger-row__bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s var(--ease-out);
+  min-width: 4px;
+}
+
+.n-trigger-row__count {
+  font-size: 11px;
+  color: var(--color-text-dim);
+  width: 50px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Causal items ── */
+.n-causal-item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.n-causal-item:last-child { border-bottom: none; }
+
+.n-causal-item__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: 6px;
+}
+
+.n-causal-item__name {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.n-causal-item__severity-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.n-causal-item__severity-badge--high   { background: rgba(220, 38, 38, 0.10); color: var(--color-symptom); }
+.n-causal-item__severity-badge--med    { background: rgba(217, 119, 6, 0.10); color: var(--color-trigger); }
+.n-causal-item__severity-badge--low    { background: rgba(15, 118, 110, 0.10); color: var(--color-med); }
+
+.n-causal-item__causes {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: var(--space-3);
+  border-left: 2px solid rgba(220, 38, 38, 0.20);
+}
+
+.n-causal-item__cause {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  padding-left: var(--space-2);
+  position: relative;
+}
+
+.n-causal-item__cause::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 7px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-symptom);
+  opacity: 0.5;
+}
+
+/* ── Invite banner ── */
+.n-invite {
+  background: var(--color-surface);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-5);
+  text-align: center;
+  box-shadow: var(--shadow-md);
+}
+
+.n-invite h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+.n-invite p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.n-invite__perms {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.n-invite__perm-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--color-mood);
+  font-weight: 500;
+}
+
+/* ── Auth ── */
+.n-auth {
+  text-align: center;
+  padding: 80px var(--space-5);
+}
+
+.n-auth .n-empty__text {
+  margin-bottom: var(--space-6);
+}
+
+.n-sign-in-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 28px;
+  min-height: 56px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-sign-in-btn:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.n-sign-in-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── User bar ── */
+.n-user-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.n-user-bar img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+}
+
+.n-sign-out-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px 16px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-sign-out-btn:hover {
+  border-color: var(--color-border-focus);
+  color: var(--color-text);
+}
+
+/* ── Page containers ── */
+.n-page {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.n-page.active {
+  display: block;
+  animation: n-fade-in 0.4s var(--ease-out) both;
+}
+
+/* ── No data ── */
+.n-no-data {
+  font-size: 13px;
+  color: var(--color-text-dim);
+  font-style: italic;
+  padding: var(--space-4) 0;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Animations
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes n-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes n-card-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes n-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes n-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+@keyframes n-shimmer {
+  to { background-position-x: -220%; }
+}
+
+@keyframes n-orb-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Responsive — Mobile First
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+  .n-app {
+    padding: var(--space-4);
+  }
+
+  .n-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .n-header__actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .n-header__session {
+    justify-content: center;
+  }
+
+  .n-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .n-filters__field {
+    width: 100%;
+  }
+
+  .n-filters__field input,
+  .n-filters select {
+    width: 100%;
+  }
+
+  .n-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+  }
+
+  .n-summary {
+    justify-content: center;
+  }
+
+  .n-graph-shell {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .n-graph-stage {
+    min-height: 420px;
+  }
+
+  .n-graph-canvas {
+    min-height: 380px;
+  }
+
+  .n-graph-intro {
+    align-items: flex-start;
+  }
+
+  .n-care-plan-grid,
+  .n-voice-shell,
+  .n-reminder-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .n-reminder-row {
+    grid-template-columns: 1fr;
+  }
+
+  .n-reminder-row__actions {
+    justify-content: flex-start;
+  }
+
+  .n-skeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .n-consistency__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .n-sign-out-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .n-btn--primary,
+  .n-btn--secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+}
+
+@media (min-width: 1024px) {
+
+  .n-graph-shell {
+    grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.95fr);
+  }
+
+  .n-care-plan-grid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+  }
+
+  .n-voice-shell {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  }
+}
+
+/* ── Touch target enforcement ── */
+@media (hover: none) {
+  .n-btn:hover,
+  .n-btn--primary:hover,
+  .n-btn--secondary:hover,
+  .n-btn--danger:hover,
+  .n-btn--icon:hover,
+  .n-nav__pill:hover,
+  .n-graph-focus-chip:hover,
+  .n-sign-in-btn:hover,
+  .n-sign-out-btn:hover {
+    box-shadow: inherit;
+    filter: none;
+    border-color: inherit;
+    color: inherit;
+    background: inherit;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="n-app">
+  <header class="n-header glass">
+    <div class="n-header__brand">
+      <div class="n-header__logo" data-i18n="app_title">Noongil</div>
+      <span class="n-header__subtitle" data-i18n="app_subtitle">Wellness Insights</span>
+    </div>
+    <div class="n-header__actions">
+      <div id="sessionBar" class="n-header__session"></div>
+      <button class="n-btn n-btn--icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <select class="n-input n-lang-select" id="langSelect">
+        <option value="en">EN</option>
+        <option value="mn">MN</option>
+      </select>
+    </div>
+  </header>
+
+  <section class="n-filters glass" id="controlsBar"></section>
+
+  <div id="inviteBanner" style="display:none"></div>
+
+  <div id="summaryBar" class="n-summary" style="display:none"></div>
+
+  <nav class="n-nav" id="pageNav"></nav>
+
+  <div id="page-checkins" class="n-page"></div>
+  <div id="page-causal" class="n-page"></div>
+  <div id="page-care-plan" class="n-page"></div>
+  <div id="page-messages" class="n-page"></div>
+
+  <div id="emptyState" class="n-empty"></div>
+</div>
+
+<div class="n-overlay" id="loadingOverlay">
+  <div class="n-loader">
+    <div class="n-loader__orb"></div>
+  </div>
+  <div class="n-loader__copy">
+    <div class="n-loader__title" id="loadingTitle" data-i18n="loading_title">Preparing dashboard</div>
+    <div class="n-loader__subtitle" id="loadingSubtitle" data-i18n="loading_subtitle">Checking your session</div>
+  </div>
+</div>
+
+<script type="module">
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  NOONGIL CAREGIVER DASHBOARD                                ║
+// ╚══════════════════════════════════════════════════════════════╝
+
+// ── Imports ──
+import cytoscape from 'https://esm.sh/cytoscape@3.30.4';
+import cytoscapeDagre from 'https://esm.sh/cytoscape-dagre@2.5.0';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+cytoscape.use(cytoscapeDagre);
+
+// ── Config ──
+const firebaseConfig = window.__NOONGIL_FIREBASE_CONFIG__ ?? {
+  apiKey: 'REPLACE_WITH_FIREBASE_WEB_API_KEY',
+  authDomain: 'REPLACE_WITH_FIREBASE_AUTH_DOMAIN',
+  projectId: 'REPLACE_WITH_FIREBASE_PROJECT_ID',
+  storageBucket: 'REPLACE_WITH_FIREBASE_STORAGE_BUCKET',
+  appId: 'REPLACE_WITH_FIREBASE_WEB_APP_ID',
+  messagingSenderId: 'REPLACE_WITH_FIREBASE_MESSAGING_SENDER_ID',
+  measurementId: 'REPLACE_WITH_FIREBASE_MEASUREMENT_ID',
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+const COLORS = {
+  mood:    { line: '#2563EB', fill: 'rgba(37,99,235,0.10)',  text: '#2563EB' },
+  sleep:   { line: '#7C3AED', fill: 'rgba(124,58,237,0.10)', text: '#7C3AED' },
+  med:     { line: '#0F766E', fill: 'rgba(15,118,110,0.10)', text: '#0F766E' },
+  symptom: { line: '#DC2626', fill: 'rgba(220,38,38,0.10)',  text: '#DC2626' },
+  trigger: { line: '#D97706', fill: 'rgba(217,119,6,0.10)',  text: '#D97706' },
+};
+
+const today = new Date();
+const sevenAgo = new Date(today);
+sevenAgo.setDate(sevenAgo.getDate() - 6);
+function fmt(d) { return d.toISOString().split('T')[0]; }
+
+// ── I18n ──
+const S = {
+  en: {
+    app_title:'Noongil', app_subtitle:'Wellness Insights',
+    sign_in_title:'Caregiver access', sign_in_desc:'Sign in with your Google account to review wellness data shared with you by people you care for.',
+    sign_in_btn:'Sign in with Google', sign_out:'Sign out',
+    caregiver_dashboard:'Caregiver Dashboard', dashboard_desc:'Default view shows the last 7 days so you can spot missed check-ins, rough days, and likely contributors quickly.',
+    member_loading:'Loading...', member_none:'No members available', member_self:'My data',
+    from:'From', to:'To', refresh:'Refresh',
+    loading_title:'Preparing dashboard', loading_subtitle:'Checking your session and loading caregiver access.',
+    loading_refresh_title:'Loading caregiver dashboard', loading_refresh_subtitle:'Fetching trends, graph relationships, triggers, and summaries.',
+    loading_insights_title:'Refreshing insights', loading_insights_subtitle:'Updating the selected member and date range.',
+    nav_checkins:'Check-Ins', nav_causal:'Causal Engine', nav_care_plan:'Care Plan Controls', nav_messages:'Messages',
+    days_in_range:'Days in range', checkins_logged:'Check-ins logged', avg_mood:'Avg Mood', avg_sleep:'Avg Sleep', med_adherence:'Med Adherence',
+    consistency_title:'Check-in Consistency', consistency_desc:'Spot missed days quickly before they turn into blind spots',
+    days_monitored:'Days monitored', days_with_checkins:'Days with check-ins', missing_days:'Missing days', coverage:'Coverage',
+    no_missed:'No missed check-ins in this window.', missed_note:'Days below had no synced mood, sleep, medication, or symptom data.', all_covered:'All days covered',
+    trends_title:'Wellness Trends', trends_desc:'Daily mood, sleep, and medication adherence',
+    mood:'Mood', sleep:'Sleep', meds:'Meds',
+    symptom_title:'Symptom Trends', symptom_desc:'Daily severity by symptom type',
+    causal_title:'Why Symptoms Got Worse', causal_desc:'Factors linked to symptom flare-ups from your data',
+    graph_title:'Symptom Relationship Map', graph_desc:'See the selected symptom, linked contributors, and the days they connect across',
+    graph_story:'See the story behind a rough day', graph_story_desc:'This is a heuristic map that helps caregivers follow what happened, what may have contributed, and what patterns appear repeatedly. It is for situational awareness, not diagnosis.',
+    graph_focus:'Focus on', graph_connected:'Connected moments',
+    graph_how:'How to read this view', graph_how_desc:'The selected symptom stays at the center. Connected sleep, medication, trigger, and activity nodes show what else was recorded around that event.',
+    graph_no_data:'No graph data yet', graph_no_data_desc:'As more structured check-ins are synced, the relationship map will appear here.',
+    graph_no_paths:'No connected symptom-to-cause paths were found in this range yet.',
+    graph_empty_detail:'No connected graph data yet. As more check-ins include sleep, medication, symptom, and trigger details, this map will become richer.',
+    graph_how_works:'Noongil stores each day, symptom, sleep note, medication event, and trigger as part of a connected timeline. When there is enough structure, the graph highlights likely contributors and repeating patterns.',
+    graph_nothing_selected:'Nothing selected', graph_nothing_selected_desc:'Tap a node in the map to inspect what happened and why it may matter.',
+    graph_no_contributor:'No contributor path stored yet', graph_no_contributor_desc:'This symptom is recorded in the graph, but there are no linked sleep, medication, or trigger contributors in the current window.',
+    graph_attention:'What to pay attention to',
+    graph_quiet:'Quiet day', graph_quiet_desc:'No connected symptom, sleep, medication, or trigger events were recorded for this day.',
+    graph_context:'Context node', graph_context_desc:'This node provides context in the timeline. Tap connected symptom nodes to see where it may have mattered.',
+    legend_symptom:'Symptom', legend_sleep:'Sleep', legend_medication:'Medication', legend_trigger:'Trigger', legend_activity:'Activity',
+    care_plan_title:'Care Plan Controls', care_plan_desc:'Review the current schedule and adjust custom reminders without leaving the dashboard',
+    care_plan_unavail:'Care plan controls unavailable', care_plan_unavail_desc:'This caregiver account does not currently have reminder access for the selected member.',
+    current_plan:'Current care plan', custom_reminders_label:'Custom reminders', active_meds:'Active medications',
+    morning_checkin:'Morning check-in', evening_checkin:'Evening check-in', checkins_label:'Check-ins', no_schedule:'No schedule set',
+    med_schedule:'Medication schedule', no_meds:'No active medications are shared with this caregiver account.',
+    add_reminder:'Add custom reminder', edit_reminder:'Edit custom reminder',
+    reminder_placeholder:'Reminder title', note_placeholder:'Optional note',
+    add_btn:'Add reminder', update_btn:'Update reminder', cancel:'Cancel',
+    custom_reminders:'Custom reminders', no_reminders:'No custom reminders yet. Add one above to create a new caregiver-managed reminder.',
+    time_label:'Time', status_label:'Status', enabled:'Enabled', paused:'Paused',
+    created_by:'Created by', caregiver_label:'Caregiver', edit:'Edit', delete_btn:'Delete',
+    voice_title:'Voice Messages', voice_desc:'Record a short supportive note and send it directly to the member app inbox',
+    record_message:'Record message', voice_default:'Keep it short and supportive. Messages are currently limited to 20 seconds.',
+    start_recording:'Start recording', recording_active:'Recording…', stop:'Stop',
+    send_to_member:'Send to member app', discard:'Discard',
+    duration_label:'Duration', format_label:'Format', last_sent:'Last sent',
+    voice_note:'For demo safety, the dashboard currently encodes short WAV clips and stores them directly with the message metadata.',
+    delivery:'Delivery', delivery_desc:'After you send a message here, the member app receives it through the Firestore-backed inbox and can play it from the Reminders screen.',
+    mic_active:'Microphone active. Speak clearly, then stop when you are done.',
+    recording_ready:'Recording ready to send.', sending:'Sending voice message to the member app…', sent_success:'Voice message sent successfully.',
+    no_data:'No data available for this period',
+    no_data_range:'No data in this range', no_data_range_desc:'Try a wider date range or check that check-ins have been synced.',
+    sign_in_empty:'Sign in to view wellness insights', sign_in_empty_desc:'Sign in with your Google account to see data shared with you by members you care for.',
+    no_members:'No shared members yet', no_members_desc:'Accepted caregiver invitations will appear here automatically once a member shares data with you.',
+    error_load:'Unable to load shared data', error_load_desc:'Please refresh and try again.', failed_load:'Failed to load',
+    invited:'You have been invited as a caregiver', invited_desc:'A member wants to share their wellness data with you.',
+    accept_invite:'Accept Invitation', accepting:'Accepting...',
+    invite_accepted:'Invitation accepted', invite_accepted_desc:'You can now view this member\'s wellness data.',
+    invite_invalid:'This invitation link is no longer valid.',
+    perm_medications:'Medications', perm_reminders:'Reminders', perm_schedule:'Schedule', perm_wellness:'Wellness Dashboard',
+  },
+  mn: {
+    app_title:'Нунгил', app_subtitle:'Эрүүл мэндийн тойм',
+    sign_in_title:'Асран хамгаалагчийн хандалт', sign_in_desc:'Google бүртгэлээрээ нэвтэрч, танд хуваалцсан эрүүл мэндийн мэдээллийг харна уу.',
+    sign_in_btn:'Google-ээр нэвтрэх', sign_out:'Гарах',
+    caregiver_dashboard:'Асран хамгаалагчийн самбар', dashboard_desc:'Сүүлийн 7 хоногийн мэдээллийг харуулна.',
+    member_loading:'Ачаалж байна...', member_none:'Гишүүн байхгүй', member_self:'Миний мэдээлэл',
+    from:'Эхлэл', to:'Төгсгөл', refresh:'Шинэчлэх',
+    loading_title:'Самбар бэлтгэж байна', loading_subtitle:'Сессийг шалгаж байна.',
+    loading_refresh_title:'Самбар ачаалж байна', loading_refresh_subtitle:'Чиг хандлага, график татаж байна.',
+    loading_insights_title:'Мэдээлэл шинэчилж байна', loading_insights_subtitle:'Шинэчилж байна.',
+    nav_checkins:'Бүртгэлүүд', nav_causal:'Шалтгааны систем', nav_care_plan:'Халамжийн төлөвлөгөө', nav_messages:'Зурвасууд',
+    days_in_range:'Хоногийн тоо', checkins_logged:'Бүртгэгдсэн', avg_mood:'Дундаж сэтгэл', avg_sleep:'Дундаж нойр', med_adherence:'Эмийн мөрдөлт',
+    consistency_title:'Бүртгэлийн тогтвортой байдал', consistency_desc:'Алдсан өдрүүдийг хурдан олоорой',
+    days_monitored:'Хянагдсан', days_with_checkins:'Бүртгэлтэй', missing_days:'Дутуу', coverage:'Хамрах хүрээ',
+    no_missed:'Алдсан бүртгэл байхгүй.', missed_note:'Доорх өдрүүдэд мэдээлэл бүртгэгдээгүй.', all_covered:'Бүх өдрүүд бүртгэгдсэн',
+    trends_title:'Эрүүл мэндийн чиг хандлага', trends_desc:'Сэтгэл, нойр, эмийн мөрдөлт',
+    mood:'Сэтгэл', sleep:'Нойр', meds:'Эм',
+    symptom_title:'Шинж тэмдгийн чиг хандлага', symptom_desc:'Төрлөөр өдөр тутмын хүндийн зэрэг',
+    causal_title:'Шинж тэмдэг яагаад муудсан', causal_desc:'Шинж тэмдгийн дэгдэлттэй холбоотой хүчин зүйлүүд',
+    graph_title:'Шинж тэмдгийн холбоосын газрын зураг', graph_desc:'Сонгосон шинж тэмдэг, холбогдох хүчин зүйлүүдийг харна уу',
+    graph_story:'Хүнд өдрийн түүхийг харна уу', graph_story_desc:'Асран хамгаалагчдад юу болсон, юу нөлөөлсөн байж болохыг ойлгоход тусална.',
+    graph_focus:'Анхаарах', graph_connected:'Холбогдсон мөчүүд',
+    graph_how:'Хэрхэн унших вэ', graph_how_desc:'Сонгосон шинж тэмдэг төвд байна. Холбогдсон цэгүүд тухайн үйл явдлын эргэн тойронд юу бүртгэгдсэнийг харуулна.',
+    graph_no_data:'Графикийн мэдээлэл байхгүй', graph_no_data_desc:'Илүү олон бүртгэл синк хийгдэх тусам газрын зураг гарч ирнэ.',
+    graph_no_paths:'Энэ хугацаанд замууд олдсонгүй.',
+    graph_empty_detail:'Холбогдсон графикийн мэдээлэл байхгүй.',
+    graph_how_works:'Нунгил бүртгэлүүдийг холбогдсон цаг хугацааны мөрийн нэг хэсэг болгон хадгалдаг.',
+    graph_nothing_selected:'Сонгогдоогүй', graph_nothing_selected_desc:'Цэг дээр дарж шалгана уу.',
+    graph_no_contributor:'Хувь нэмэр оруулагчийн зам хадгалагдаагүй', graph_no_contributor_desc:'Энэ шинж тэмдэг графикт бүртгэгдсэн.',
+    graph_attention:'Юунд анхаарах вэ',
+    graph_quiet:'Тайван өдөр', graph_quiet_desc:'Үйл явдал бүртгэгдээгүй.',
+    graph_context:'Контекст цэг', graph_context_desc:'Цаг хугацааны мөрөнд контекст өгнө.',
+    legend_symptom:'Шинж тэмдэг', legend_sleep:'Нойр', legend_medication:'Эм', legend_trigger:'Өдөөгч', legend_activity:'Үйл ажиллагаа',
+    care_plan_title:'Халамжийн төлөвлөгөө', care_plan_desc:'Хуваарийг шалгаж, сануулгуудыг тохируулна уу',
+    care_plan_unavail:'Халамжийн удирдлага боломжгүй', care_plan_unavail_desc:'Сануулгын хандалт байхгүй.',
+    current_plan:'Одоогийн төлөвлөгөө', custom_reminders_label:'Тусгай сануулгууд', active_meds:'Идэвхтэй эмүүд',
+    morning_checkin:'Өглөөний бүртгэл', evening_checkin:'Оройн бүртгэл', checkins_label:'Бүртгэлүүд', no_schedule:'Хуваарь тохируулагдаагүй',
+    med_schedule:'Эмийн хуваарь', no_meds:'Идэвхтэй эмийн мэдээлэл хуваалцагдаагүй.',
+    add_reminder:'Сануулга нэмэх', edit_reminder:'Сануулга засах',
+    reminder_placeholder:'Сануулгын гарчиг', note_placeholder:'Нэмэлт тэмдэглэл',
+    add_btn:'Нэмэх', update_btn:'Шинэчлэх', cancel:'Цуцлах',
+    custom_reminders:'Тусгай сануулгууд', no_reminders:'Тусгай сануулга байхгүй.',
+    time_label:'Цаг', status_label:'Төлөв', enabled:'Идэвхтэй', paused:'Түр зогсоосон',
+    created_by:'Үүсгэсэн', caregiver_label:'Асран хамгаалагч', edit:'Засах', delete_btn:'Устгах',
+    voice_title:'Дуут зурвасууд', voice_desc:'Богино дэмжлэгийн тэмдэглэл бичиж илгээнэ үү',
+    record_message:'Зурвас бичих', voice_default:'Богино, дэмжлэгтэй байлгана уу.',
+    start_recording:'Бичлэг эхлүүлэх', recording_active:'Бичиж байна…', stop:'Зогсоох',
+    send_to_member:'Илгээх', discard:'Хаях',
+    duration_label:'Хугацаа', format_label:'Формат', last_sent:'Сүүлд илгээсэн',
+    voice_note:'WAV клипүүдийг шууд кодлон хадгалдаг.',
+    delivery:'Хүргэлт', delivery_desc:'Зурвас илгээсний дараа гишүүний апп хүлээн авна.',
+    mic_active:'Микрофон идэвхтэй.', recording_ready:'Бичлэг бэлэн.', sending:'Илгээж байна…', sent_success:'Амжилттай илгээгдлээ.',
+    no_data:'Мэдээлэл байхгүй',
+    no_data_range:'Энэ хугацаанд мэдээлэл байхгүй', no_data_range_desc:'Огнооны мужийг өргөтгөж үзнэ үү.',
+    sign_in_empty:'Нэвтэрнэ үү', sign_in_empty_desc:'Google бүртгэлээрээ нэвтэрнэ үү.',
+    no_members:'Хуваалцсан гишүүн байхгүй', no_members_desc:'Урилга зөвшөөрөгдсөний дараа энд гарч ирнэ.',
+    error_load:'Ачаалж чадсангүй', error_load_desc:'Дахин оролдоно уу.', failed_load:'Ачаалж чадсангүй',
+    invited:'Урилга авлаа', invited_desc:'Гишүүн мэдээллээ хуваалцахыг хүсч байна.',
+    accept_invite:'Зөвшөөрөх', accepting:'Зөвшөөрч байна...',
+    invite_accepted:'Зөвшөөрөгдлөө', invite_accepted_desc:'Мэдээллийг харах боломжтой.',
+    invite_invalid:'Урилга хүчингүй.',
+    perm_medications:'Эмүүд', perm_reminders:'Сануулгууд', perm_schedule:'Хуваарь', perm_wellness:'Эрүүл мэндийн самбар',
+  }
+};
+
+const I18n = {
+  _lang: 'en',
+  init() { this._lang = localStorage.getItem('noongil-lang') || 'en'; document.getElementById('langSelect').value = this._lang; },
+  setLang(l) { this._lang = l; localStorage.setItem('noongil-lang', l); this.apply(); },
+  t(k) { return S[this._lang]?.[k] || S.en[k] || k; },
+  apply() { document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = this.t(el.dataset.i18n); }); }
+};
+
+// ── Theme ──
+const Theme = {
+  init() {
+    const saved = localStorage.getItem('noongil-theme');
+    const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    this.set(saved || preferred);
+  },
+  set(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('noongil-theme', theme);
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.querySelector('svg').innerHTML = theme === 'dark'
+      ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
+      : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  },
+  toggle() { this.set(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
+};
+
+// ── State ──
+let currentUser = null;
+let currentToken = null;
+let members = [];
+let selfId = null;
+let selectedMemberId = null;
+let authResolved = false;
+let activeRange = null;
+let isBootstrapping = true;
+let currentDashboardData = null;
+let reminderDraft = { id: null, title: '', note: '', time: '09:00', isEnabled: true };
+let activeDashboardPage = location.hash.replace('#','') || 'checkins';
+let voiceComposerState = { isRecording: false, isSending: false, statusMessage: '', error: '', audioBase64: null, mimeType: 'audio/wav', durationSeconds: 0, sentAt: '' };
+let voiceRecorderSession = null;
+
+// ── Router ──
+const PAGES = ['checkins','causal','care-plan','messages'];
+function routerInit() {
+  window.addEventListener('hashchange', () => {
+    const hash = location.hash.replace('#','') || 'checkins';
+    activeDashboardPage = PAGES.includes(hash) ? hash : 'checkins';
+    if (currentDashboardData) renderActivePage();
+  });
+}
+function routerGo(page) { location.hash = page; }
+
+// ── Auth helpers ──
+async function getToken() { if (!currentUser) return null; currentToken = await currentUser.getIdToken(); return currentToken; }
+function authHeaders() { return { authorization: `Bearer ${currentToken}` }; }
+
+function setLoadingState(active, title, subtitle) {
+  const overlay = document.getElementById('loadingOverlay');
+  const titleEl = document.getElementById('loadingTitle');
+  const subtitleEl = document.getElementById('loadingSubtitle');
+  if (!overlay) return;
+  if (titleEl) titleEl.textContent = title || I18n.t('loading_title');
+  if (subtitleEl) subtitleEl.textContent = subtitle || I18n.t('loading_subtitle');
+  overlay.classList.toggle('active', active);
+}
+
+// ── Auth UI ──
+function renderSignedOutControls() {
+  document.getElementById('sessionBar').innerHTML = '';
+  const bar = document.getElementById('controlsBar');
+  bar.innerHTML = '';
+  bar.className = 'n-filters glass n-filters--signed-out';
+  bar.innerHTML = `
+    <div class="n-filters__copy">
+      <div class="n-filters__title">${escapeHtml(I18n.t('sign_in_title'))}</div>
+      <div class="n-filters__subtitle">${escapeHtml(I18n.t('sign_in_desc'))}</div>
+    </div>`;
+  const btn = document.createElement('button');
+  btn.className = 'n-btn n-btn--primary';
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.9 7.34 2.44 10.5l8.09-5.91z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+  ${escapeHtml(I18n.t('sign_in_btn'))}`;
+  btn.onclick = () => signInWithPopup(auth, provider).catch(console.error);
+  bar.appendChild(btn);
+}
+
+function renderSignedInControls() {
+  const sessionBar = document.getElementById('sessionBar');
+  const bar = document.getElementById('controlsBar');
+  sessionBar.innerHTML = '';
+  bar.innerHTML = '';
+  bar.className = 'n-filters glass';
+
+  const userBar = document.createElement('div');
+  userBar.className = 'n-user-bar';
+  if (currentUser.photoURL) { const img = document.createElement('img'); img.src = currentUser.photoURL; img.alt = ''; img.referrerPolicy = 'no-referrer'; userBar.appendChild(img); }
+  userBar.appendChild(document.createTextNode(currentUser.displayName || currentUser.email || ''));
+  sessionBar.appendChild(userBar);
+
+  const signOutBtn = document.createElement('button');
+  signOutBtn.className = 'n-btn n-btn--secondary';
+  signOutBtn.textContent = I18n.t('sign_out');
+  signOutBtn.onclick = () => signOut(auth);
+  sessionBar.appendChild(signOutBtn);
+
+  bar.innerHTML = `<div class="n-filters__copy"><div class="n-filters__title">${escapeHtml(I18n.t('caregiver_dashboard'))}</div><div class="n-filters__subtitle">${escapeHtml(I18n.t('dashboard_desc'))}</div></div>`;
+
+  const select = document.createElement('select');
+  select.id = 'memberSelect'; select.className = 'n-input';
+  select.innerHTML = `<option value="">${escapeHtml(I18n.t('member_loading'))}</option>`;
+  select.onchange = () => { selectedMemberId = select.value; if (selectedMemberId) loadDashboard(); };
+  bar.appendChild(select);
+
+  bar.appendChild(makeDateField('startDate', I18n.t('from'), fmt(sevenAgo)));
+  bar.appendChild(makeDateField('endDate', I18n.t('to'), fmt(today)));
+
+  const loadBtn = document.createElement('button');
+  loadBtn.className = 'n-btn n-btn--primary';
+  loadBtn.textContent = I18n.t('refresh');
+  loadBtn.onclick = loadDashboard;
+  bar.appendChild(loadBtn);
+}
+
+function makeDateField(id, labelText, value) {
+  const field = document.createElement('div');
+  field.className = 'n-filters__field';
+  const label = document.createElement('label');
+  label.htmlFor = id; label.textContent = labelText;
+  field.appendChild(label);
+  const input = document.createElement('input');
+  input.type = 'date'; input.id = id; input.className = 'n-input'; input.value = value;
+  field.appendChild(input);
+  return field;
+}
+
+// ── Members + Data Loading ──
+async function fetchMembers() {
+  try {
+    await getToken();
+    const res = await fetch('/api/dashboard/me', { headers: authHeaders() });
+    if (!res.ok) throw new Error(`${res.status}`);
+    const data = await res.json();
+    members = data.members || [];
+    selfId = data.selfId;
+    const select = document.getElementById('memberSelect');
+    if (!select) return;
+    select.innerHTML = '';
+    if (members.length === 0 && selfId) {
+      const opt = document.createElement('option'); opt.value = selfId; opt.textContent = I18n.t('member_self'); select.appendChild(opt);
+    }
+    for (const m of members) {
+      const opt = document.createElement('option'); opt.value = m.memberId; opt.textContent = m.memberName || m.memberId; select.appendChild(opt);
+    }
+    if (members.length === 0 && !selfId) select.innerHTML = `<option value="">${escapeHtml(I18n.t('member_none'))}</option>`;
+    selectedMemberId = select.value;
+    if (selectedMemberId) await loadDashboard();
+    else { isBootstrapping = false; setLoadingState(false); clearDashboard('no_members'); }
+  } catch (err) {
+    console.error('Failed to fetch members:', err);
+    isBootstrapping = false; setLoadingState(false);
+    showError(I18n.t('error_load'), I18n.t('error_load_desc'));
+  }
+}
+
+async function fetchMemberReminders(memberId, headers) {
+  const res = await fetch(`/api/caregiver/members/${memberId}/reminders`, { headers });
+  if (res.status === 403 || res.status === 404) return null;
+  if (!res.ok) throw new Error(`Reminder API error: ${res.status}`);
+  return res.json();
+}
+
+async function loadDashboard() {
+  const select = document.getElementById('memberSelect');
+  if (select?.value) selectedMemberId = select.value;
+  const userId = selectedMemberId;
+  if (!userId) return;
+  const startEl = document.getElementById('startDate');
+  const endEl = document.getElementById('endDate');
+  const start = startEl ? startEl.value : fmt(sevenAgo);
+  const end = endEl ? endEl.value : fmt(today);
+  activeRange = { start, end };
+  await getToken();
+  const params = new URLSearchParams({ userId, start, end });
+  const headers = authHeaders();
+  if (isBootstrapping) setLoadingState(true, I18n.t('loading_refresh_title'), I18n.t('loading_refresh_subtitle'));
+  else { renderDashboardSkeleton(); setLoadingState(true, I18n.t('loading_insights_title'), I18n.t('loading_insights_subtitle')); }
+  try {
+    const [tsRes, corrRes, trigRes, causalRes, graphRes, reminders] = await Promise.all([
+      fetch(`/api/dashboard/time-series?${params}`, { headers }),
+      fetch(`/api/dashboard/correlations?${params}`, { headers }),
+      fetch(`/api/dashboard/triggers?${params}`, { headers }),
+      fetch(`/api/dashboard/causal?${params}`, { headers }),
+      fetch(`/api/dashboard/graph?${params}`, { headers }),
+      fetchMemberReminders(userId, headers),
+    ]);
+    if (!tsRes.ok || !corrRes.ok || !trigRes.ok || !causalRes.ok || !graphRes.ok) {
+      const failedRes = [tsRes, corrRes, trigRes, causalRes, graphRes].find(r => !r.ok);
+      if (failedRes?.status === 403) throw new Error('Access denied.');
+      throw new Error(`API error: ${failedRes?.status}`);
+    }
+    const [timeSeries, correlations, triggers, causal, graph] = await Promise.all([tsRes.json(), corrRes.json(), trigRes.json(), causalRes.json(), graphRes.json()]);
+    const normalizedSeries = normalizeTimeSeriesRange(timeSeries, start, end);
+    currentDashboardData = { timeSeries: normalizedSeries, correlations, triggers, causal, graph, reminders };
+    renderActivePage();
+  } catch (err) {
+    console.error('Failed to load dashboard:', err);
+    showError(I18n.t('failed_load'), err.message);
+  } finally { isBootstrapping = false; setLoadingState(false); }
+}
+
+// ── Invite flow ──
+async function checkInviteToken() {
+  const inviteToken = new URLSearchParams(window.location.search).get('invite');
+  if (!inviteToken) return;
+  try {
+    const res = await fetch(`/api/caregiver/invitation/${inviteToken}`, { headers: authHeaders() });
+    if (!res.ok) { if (res.status === 404) showInviteError(I18n.t('invite_invalid')); return; }
+    const invite = await res.json();
+    if (invite.status !== 'pending') { showInviteError(`This invitation has already been ${invite.status}.`); return; }
+    showInviteBanner(invite, inviteToken);
+  } catch (err) { console.error('Failed to check invite:', err); }
+}
+
+function showInviteBanner(invite, token) {
+  const permLabels = { medications: I18n.t('perm_medications'), reminders: I18n.t('perm_reminders'), schedule: I18n.t('perm_schedule'), wellness: I18n.t('perm_wellness') };
+  const banner = document.getElementById('inviteBanner');
+  banner.style.display = 'block';
+  banner.className = 'n-invite';
+  banner.innerHTML = `<h3>${escapeHtml(I18n.t('invited'))}</h3><p>${escapeHtml(I18n.t('invited_desc'))}</p>
+    <div class="n-invite__perms">${invite.permissions.map(p => `<span class="n-badge n-badge--weak">${escapeHtml(permLabels[p] || p)}</span>`).join('')}</div>
+    <button class="n-btn n-btn--primary" id="acceptInviteBtn">${escapeHtml(I18n.t('accept_invite'))}</button>`;
+  document.getElementById('acceptInviteBtn').onclick = async () => {
+    const btn = document.getElementById('acceptInviteBtn');
+    btn.disabled = true; btn.textContent = I18n.t('accepting');
+    try {
+      const res = await fetch(`/api/caregiver/invitation/${token}/accept`, { method: 'POST', headers: authHeaders() });
+      if (!res.ok) { const err = await res.json(); throw new Error(err.error || `Error ${res.status}`); }
+      banner.innerHTML = `<h3>${escapeHtml(I18n.t('invite_accepted'))}</h3><p>${escapeHtml(I18n.t('invite_accepted_desc'))}</p>`;
+      window.history.replaceState({}, '', '/dashboard');
+      await fetchMembers();
+      setTimeout(() => { banner.style.display = 'none'; }, 3000);
+    } catch (err) { btn.disabled = false; btn.textContent = I18n.t('accept_invite'); alert(err.message); }
+  };
+}
+
+function showInviteError(msg) {
+  const banner = document.getElementById('inviteBanner');
+  banner.style.display = 'block'; banner.className = 'n-invite';
+  banner.innerHTML = `<p>${escapeHtml(msg)}</p>`;
+  setTimeout(() => { banner.style.display = 'none'; }, 5000);
+}
+
+// ── Dashboard rendering ──
+function clearDashboard(reason = 'signed_out') {
+  document.getElementById('pageNav').innerHTML = '';
+  document.getElementById('pageNav').className = 'n-nav';
+  let title = I18n.t('sign_in_empty'), body = I18n.t('sign_in_empty_desc');
+  if (reason === 'no_members') { title = I18n.t('no_members'); body = I18n.t('no_members_desc'); }
+  PAGES.forEach(p => { const el = document.getElementById('page-' + p); if (el) { el.innerHTML = ''; el.classList.remove('active'); } });
+  const empty = document.getElementById('emptyState');
+  empty.style.display = '';
+  empty.innerHTML = `<div class="n-empty__orb"></div><div class="n-empty__text"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(body)}</div>`;
+  document.getElementById('summaryBar').style.display = 'none';
+  document.getElementById('inviteBanner').style.display = 'none';
+}
+
+function showError(title, body) {
+  PAGES.forEach(p => { const el = document.getElementById('page-' + p); if (el) { el.innerHTML = ''; el.classList.remove('active'); } });
+  const empty = document.getElementById('emptyState');
+  empty.style.display = '';
+  empty.innerHTML = `<div class="n-empty__orb"></div><div class="n-empty__text"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(body)}</div>`;
+}
+
+function renderDashboardSkeleton() {
+  if (isBootstrapping) return;
+  document.getElementById('pageNav').innerHTML = ''; document.getElementById('summaryBar').style.display = 'none';
+  const page = document.getElementById('page-checkins');
+  if (page) { page.innerHTML = `<div class="n-grid"><div class="n-skeleton__card n-skeleton__card--wide"></div><div class="n-skeleton__card"></div><div class="n-skeleton__card"></div></div>`; page.classList.add('active'); }
+}
+
+function renderActivePage() {
+  if (!currentDashboardData) return;
+  const data = currentDashboardData;
+  const { timeSeries, correlations, triggers, causal, graph, reminders } = data;
+  const page = activeDashboardPage;
+
+  const hasTrends = timeSeries.dates?.length > 0;
+  const hasCausal = causal?.length > 0;
+  const hasSymptoms = timeSeries.symptomSeries && Object.keys(timeSeries.symptomSeries).length > 0;
+  const hasGraph = graph && Array.isArray(graph.nodes) && graph.nodes.length > 0;
+
+  // Render nav
+  renderPageNav();
+
+  // Hide empty state
+  document.getElementById('emptyState').style.display = 'none';
+
+  if (!hasTrends && !hasCausal && !hasGraph) {
+    const empty = document.getElementById('emptyState');
+    empty.style.display = '';
+    empty.innerHTML = `<div class="n-empty__orb"></div><div class="n-empty__text"><strong>${escapeHtml(I18n.t('no_data_range'))}</strong><br>${escapeHtml(I18n.t('no_data_range_desc'))}</div>`;
+    document.getElementById('summaryBar').style.display = 'none';
+    PAGES.forEach(p => { const el = document.getElementById('page-' + p); if (el) { el.innerHTML = ''; el.classList.remove('active'); } });
+    return;
+  }
+
+  // Clear and render pages
+  PAGES.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) { el.innerHTML = ''; el.classList.toggle('active', p === page); }
+  });
+
+  const target = document.getElementById('page-' + page);
+  if (!target) return;
+  const grid = document.createElement('div');
+  grid.className = 'n-grid';
+
+  if (page === 'checkins') {
+    renderSummaryBar(data);
+    if (hasTrends) { grid.appendChild(buildConsistencyCard(timeSeries)); grid.appendChild(buildTrendsCard(timeSeries)); }
+    if (hasSymptoms) grid.appendChild(buildSymptomCard(timeSeries));
+    if (hasCausal) grid.appendChild(buildCausalCard(causal));
+  } else {
+    document.getElementById('summaryBar').style.display = 'none';
+    if (page === 'causal') {
+      if (hasGraph) grid.appendChild(buildGraphExperienceCard(graph, correlations));
+      else grid.appendChild(buildPlaceholderCard(I18n.t('graph_no_data'), I18n.t('graph_no_data_desc')));
+    } else if (page === 'care-plan') {
+      if (reminders) grid.appendChild(buildReminderSetupCard(reminders));
+      else grid.appendChild(buildPlaceholderCard(I18n.t('care_plan_unavail'), I18n.t('care_plan_unavail_desc')));
+    } else if (page === 'messages') {
+      grid.appendChild(buildVoiceMessagesCard());
+    }
+  }
+
+  target.appendChild(grid);
+  requestAnimationFrame(() => { document.querySelectorAll('[data-sparkline]').forEach(drawSparkline); });
+}
+
+function renderPageNav() {
+  const nav = document.getElementById('pageNav');
+  nav.innerHTML = '';
+  nav.className = 'n-nav active';
+  const labels = { checkins: 'nav_checkins', causal: 'nav_causal', 'care-plan': 'nav_care_plan', messages: 'nav_messages' };
+  PAGES.forEach(p => {
+    const btn = document.createElement('button');
+    btn.className = `n-nav__pill${p === activeDashboardPage ? ' active' : ''}`;
+    btn.dataset.page = p;
+    btn.textContent = I18n.t(labels[p]);
+    btn.onclick = () => { routerGo(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    nav.appendChild(btn);
+  });
+}
+
+function renderSummaryBar(data) {
+  const summaryBar = document.getElementById('summaryBar');
+  const ts = data.timeSeries;
+  if (!ts.dates?.length) { summaryBar.style.display = 'none'; return; }
+  const days = ts.dates.length;
+  const avgMood = average(ts.moodSeries);
+  const avgSleep = average(ts.sleepHoursSeries);
+  const avgAdherence = average(ts.medAdherenceSeries);
+  const loggedDays = days - (ts.missingDates?.length || 0);
+  summaryBar.innerHTML = `
+    <div class="n-summary__stat"><div class="n-summary__value">${days}</div><div class="n-summary__label">${escapeHtml(I18n.t('days_in_range'))}</div></div>
+    <div class="n-summary__stat"><div class="n-summary__value">${loggedDays}</div><div class="n-summary__label">${escapeHtml(I18n.t('checkins_logged'))}</div></div>
+    ${avgMood !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.mood.text}">${avgMood.toFixed(1)}</div><div class="n-summary__label">${escapeHtml(I18n.t('avg_mood'))}</div></div>` : ''}
+    ${avgSleep !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.sleep.text}">${avgSleep.toFixed(1)}h</div><div class="n-summary__label">${escapeHtml(I18n.t('avg_sleep'))}</div></div>` : ''}
+    ${avgAdherence !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.med.text}">${Math.round(avgAdherence * 100)}%</div><div class="n-summary__label">${escapeHtml(I18n.t('med_adherence'))}</div></div>` : ''}`;
+  summaryBar.style.display = 'flex';
+}
+
+function renderCurrentDashboard() { if (currentDashboardData) renderActivePage(); }
+
+// ── Card builders ──
+function makeCard(title, subtitle, iconColor, iconBg) {
+  const card = document.createElement('div');
+  card.className = 'n-card';
+  card.innerHTML = `<div class="n-card__header"><div class="n-card__icon" style="background:${iconBg};color:${iconColor};">&#9679;</div><div><div class="n-card__title">${escapeHtml(title)}</div><div class="n-card__subtitle">${escapeHtml(subtitle)}</div></div></div>`;
+  return card;
+}
+
+function buildPlaceholderCard(title, body) {
+  const card = makeCard(title, body, '#64748B', 'rgba(148,163,184,0.12)');
+  card.classList.add('full-width');
+  return card;
+}
+
+function buildConsistencyCard(ts) {
+  const missingDates = Array.isArray(ts.missingDates) ? ts.missingDates : [];
+  const totalDays = ts.dates?.length || 0;
+  const loggedDays = Math.max(0, totalDays - missingDates.length);
+  const pct = totalDays > 0 ? Math.round((loggedDays / totalDays) * 100) : 0;
+  const card = makeCard(I18n.t('consistency_title'), I18n.t('consistency_desc'), '#0F766E', 'rgba(15,118,110,0.08)');
+  card.classList.add('full-width');
+  const stats = document.createElement('div');
+  stats.className = 'n-consistency__grid';
+  stats.innerHTML = `
+    <div class="n-consistency__stat"><div class="n-consistency__value">${totalDays}</div><div class="n-consistency__label">${escapeHtml(I18n.t('days_monitored'))}</div></div>
+    <div class="n-consistency__stat"><div class="n-consistency__value">${loggedDays}</div><div class="n-consistency__label">${escapeHtml(I18n.t('days_with_checkins'))}</div></div>
+    <div class="n-consistency__stat"><div class="n-consistency__value">${missingDates.length}</div><div class="n-consistency__label">${escapeHtml(I18n.t('missing_days'))}</div></div>
+    <div class="n-consistency__stat"><div class="n-consistency__value">${pct}%</div><div class="n-consistency__label">${escapeHtml(I18n.t('coverage'))}</div></div>`;
+  card.appendChild(stats);
+  const note = document.createElement('div');
+  note.className = 'n-consistency__note';
+  note.textContent = missingDates.length === 0 ? I18n.t('no_missed') : I18n.t('missed_note');
+  card.appendChild(note);
+  // Heatmap grid
+  const heatmap = document.createElement('div');
+  heatmap.className = 'n-heatmap';
+  const missingSet = new Set(missingDates);
+  (ts.dates || []).forEach(date => {
+    const cell = document.createElement('div');
+    cell.className = 'n-heatmap__cell ' + (missingSet.has(date) ? 'n-heatmap__cell--empty' : 'n-heatmap__cell--filled');
+    cell.title = prettyDate(date);
+    heatmap.appendChild(cell);
+  });
+  card.appendChild(heatmap);
+  return card;
+}
+
+function buildTrendsCard(ts) {
+  const card = makeCard(I18n.t('trends_title'), I18n.t('trends_desc'), '#3b82f6', 'rgba(37,99,235,0.08)');
+  const rows = [];
+  if (hasData(ts.moodSeries)) rows.push(makeSparklineRow(I18n.t('mood'), ts.moodSeries, ts.dates, COLORS.mood, '/5', 5));
+  if (hasData(ts.sleepHoursSeries)) rows.push(makeSparklineRow(I18n.t('sleep'), ts.sleepHoursSeries, ts.dates, COLORS.sleep, 'h', 12));
+  if (hasData(ts.medAdherenceSeries)) { const pctSeries = ts.medAdherenceSeries.map(v => v !== null ? Math.round(v * 100) : null); rows.push(makeSparklineRow(I18n.t('meds'), pctSeries, ts.dates, COLORS.med, '%', 100)); }
+  if (rows.length === 0) card.appendChild(noData());
+  else rows.forEach(r => card.appendChild(r));
+  return card;
+}
+
+function buildSymptomCard(ts) {
+  const card = makeCard(I18n.t('symptom_title'), I18n.t('symptom_desc'), '#ef4444', 'rgba(220,38,38,0.08)');
+  const types = Object.keys(ts.symptomSeries || {});
+  if (types.length === 0) { card.appendChild(noData()); return card; }
+  for (const type of types) {
+    const series = ts.symptomSeries[type];
+    if (!hasData(series)) continue;
+    card.appendChild(makeSparklineRow(capitalize(type), series, ts.dates, COLORS.symptom, '/5', 5));
+  }
+  return card;
+}
+
+function buildCausalCard(causal) {
+  const card = makeCard(I18n.t('causal_title'), I18n.t('causal_desc'), '#ef4444', 'rgba(220,38,38,0.08)');
+  card.classList.add('full-width');
+  for (const ex of causal) {
+    const item = document.createElement('div');
+    item.className = 'n-causal-item';
+    const sevClass = ex.severity >= 4 ? 'n-badge--strong' : ex.severity >= 3 ? 'n-badge--moderate' : 'n-badge--weak';
+    item.innerHTML = `<div class="n-causal-item__row"><span class="n-causal-item__name">${escapeHtml(ex.symptom)}</span><span class="n-badge ${sevClass}">${ex.severity}/5</span></div>
+      <div class="n-causal-item__causes">${ex.causes.map(c => `<div class="n-causal-item__cause">${escapeHtml(c)}</div>`).join('')}</div>`;
+    card.appendChild(item);
+  }
+  return card;
+}
+
+// ── Graph ──
+function buildGraphExperienceCard(graphData, correlations) {
+  const card = makeCard(I18n.t('graph_title'), I18n.t('graph_desc'), '#0F766E', 'rgba(13,148,136,0.08)');
+  card.classList.add('full-width', 'n-graph-card');
+  const intro = document.createElement('div');
+  intro.className = 'n-graph-intro';
+  intro.innerHTML = `<div class="n-graph-intro__copy"><strong>${escapeHtml(I18n.t('graph_story'))}</strong><span>${escapeHtml(I18n.t('graph_story_desc'))}</span></div>`;
+  card.appendChild(intro);
+  const focusStrip = document.createElement('div');
+  focusStrip.className = 'n-graph-focus-strip';
+  card.appendChild(focusStrip);
+  const shell = document.createElement('div');
+  shell.className = 'n-graph-shell';
+  const stage = document.createElement('div');
+  stage.className = 'n-graph-stage';
+  const canvas = document.createElement('div');
+  canvas.className = 'n-graph-canvas';
+  stage.appendChild(canvas);
+  shell.appendChild(stage);
+  const panel = document.createElement('div');
+  panel.className = 'n-graph-panel';
+  shell.appendChild(panel);
+  card.appendChild(shell);
+  requestAnimationFrame(() => { mountGraphExperience({ graphData, focusStrip, stage, canvas, panel }); });
+  return card;
+}
+
+function mountGraphExperience({ graphData, focusStrip, stage, canvas, panel }) {
+  const traceCatalog = buildTraceCatalog(graphData);
+  if (!traceCatalog.hasData) {
+    stage.appendChild(buildGraphEmpty(I18n.t('graph_empty_detail')));
+    panel.appendChild(buildGraphInfoCard(I18n.t('graph_how'), I18n.t('graph_how_works')));
+    return;
+  }
+  let currentFocusId = traceCatalog.defaultFocusId;
+  let cy = null;
+
+  const renderFocusStrip_ = () => {
+    focusStrip.innerHTML = '';
+    const label = document.createElement('div');
+    label.className = 'n-graph-focus-label';
+    label.textContent = traceCatalog.focusItems.length > 0 ? I18n.t('graph_focus') : I18n.t('graph_connected');
+    focusStrip.appendChild(label);
+    traceCatalog.focusItems.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = `n-graph-focus-chip${item.id === currentFocusId ? ' active' : ''}`;
+      btn.textContent = item.label;
+      btn.onclick = () => { currentFocusId = item.id; renderFocusStrip_(); renderGraph_(); };
+      focusStrip.appendChild(btn);
+    });
+  };
+
+  const focusGraphNode = (nodeId) => {
+    if (!cy || !nodeId) return;
+    const node = cy.getElementById(nodeId);
+    if (!node || node.empty()) return;
+    cy.elements().unselect();
+    node.select();
+    // Dim non-focused, center without zoom
+    cy.nodes().forEach(n => { n.style('opacity', n.id() === nodeId || n.edgesWith(node).length > 0 ? 1 : 0.25); });
+    cy.edges().forEach(e => { e.style('opacity', e.source().id() === nodeId || e.target().id() === nodeId ? 1 : 0.15); });
+    cy.animate({ center: { eles: node }, duration: 300 });
+    renderSelectionPanel_();
+  };
+
+  const renderSelectionPanel_ = () => {
+    panel.innerHTML = '';
+    panel.appendChild(buildGraphInfoCard(I18n.t('graph_how'), I18n.t('graph_how_desc')));
+    if (!cy || cy.elements().length === 0) { panel.appendChild(buildGraphInfoCard(I18n.t('graph_nothing_selected'), I18n.t('graph_nothing_selected_desc'))); return; }
+    const selected = getFocusedNode(cy, currentFocusId);
+    if (!selected) { panel.appendChild(buildGraphInfoCard(I18n.t('graph_nothing_selected'), I18n.t('graph_nothing_selected_desc'))); return; }
+    const details = buildSelectionDetails(cy, selected);
+    panel.appendChild(details.primary);
+    panel.appendChild(details.secondary);
+  };
+
+  const renderGraph_ = () => {
+    stage.querySelector('.n-graph-empty')?.remove();
+    if (cy) cy.destroy();
+    const traceModel = traceCatalog.build(currentFocusId);
+    if (traceModel.elements.length === 0) { stage.appendChild(buildGraphEmpty(I18n.t('graph_no_paths'))); renderSelectionPanel_(); return; }
+    cy = cytoscape({
+      container: canvas,
+      elements: traceModel.elements,
+      layout: traceModel.layout,
+      style: graphStyles(),
+      minZoom: 0.4, maxZoom: 2.5, wheelSensitivity: 0.3,
+    });
+    cy.on('tap', 'node', (event) => {
+      const nextKey = event.target.data('focusKey');
+      if (nextKey) { currentFocusId = nextKey; renderFocusStrip_(); }
+      // Reset opacity
+      cy.nodes().style('opacity', 1);
+      cy.edges().style('opacity', 1);
+      renderSelectionPanel_();
+    });
+    cy.on('tap', 'edge', () => renderSelectionPanel_());
+    renderSelectionPanel_();
+    if (currentFocusId) {
+      const nid = `trace-symptom-${sanitizeMetricKey(currentFocusId)}`;
+      focusGraphNode(nid);
+    }
+  };
+  renderFocusStrip_();
+  renderGraph_();
+}
+
+function getFocusedNode(cy, currentFocusId) {
+  const selected = cy.$('node:selected')[0];
+  if (selected) return selected;
+  if (currentFocusId) { const f = cy.getElementById(currentFocusId); if (f?.length > 0) return f[0]; }
+  return cy.nodes()[0] || null;
+}
+
+function buildTraceCatalog(graphData) {
+  const nodes = Array.isArray(graphData?.nodes) ? graphData.nodes : [];
+  const edges = Array.isArray(graphData?.edges) ? graphData.edges : [];
+  const dayNodes = nodes.filter(n => n.type === 'Day').sort((a, b) => (a.data?.date || '').localeCompare(b.data?.date || ''));
+  const nodeById = new Map(nodes.map(n => [n.id, n]));
+  const eventEdges = edges.filter(e => e.type === 'ON_DAY' || e.type === 'TRIGGERED_ON');
+  const nodeDayMap = new Map();
+  eventEdges.forEach(e => nodeDayMap.set(e.source, e.target));
+  const dayEvents = new Map();
+  nodes.filter(n => n.type !== 'Day' && n.type !== 'PatternMetric').forEach(n => {
+    const dayId = nodeDayMap.get(n.id); if (!dayId) return;
+    if (!dayEvents.has(dayId)) dayEvents.set(dayId, []);
+    dayEvents.get(dayId).push(n);
+  });
+  const symptomGroupMap = new Map();
+  nodes.filter(n => n.type === 'Symptom').forEach(n => {
+    const dayId = nodeDayMap.get(n.id); if (!dayId) return;
+    const symptomType = String(n.data?.type || n.label || 'symptom').toLowerCase();
+    const groupKey = `${dayId}:${symptomType}`;
+    if (!symptomGroupMap.has(groupKey)) symptomGroupMap.set(groupKey, { id: `focus-${sanitizeMetricKey(groupKey)}`, dayId, label: symptomType, symptomType, severity: 0, memberIds: [], date: nodeById.get(dayId)?.data?.date || '' });
+    const g = symptomGroupMap.get(groupKey);
+    g.memberIds.push(n.id);
+    g.severity = Math.max(g.severity, Number(n.data?.severity || 0));
+  });
+  const causalEdges = edges.filter(e => e.type === 'LIKELY_CAUSED_BY' || e.type === 'WORSENED_BY');
+  const focusItems = Array.from(symptomGroupMap.values()).map(g => {
+    const outgoing = causalEdges.filter(e => g.memberIds.includes(e.source)).length;
+    return { ...g, score: outgoing * 10 + g.severity, label: `${prettyDate(g.date)} · ${capitalize(g.label)} ${g.severity}/5` };
+  }).sort((a, b) => b.score - a.score || String(b.date).localeCompare(String(a.date))).slice(0, 6);
+
+  const build = (focusId) => {
+    const focus = focusItems.find(i => i.id === focusId) || focusItems[0];
+    if (!focus) return { elements: [], layout: { name: 'dagre', rankDir: 'TB', nodeSep: 60, rankSep: 100, animate: true, animationDuration: 400, fit: true, padding: 60 } };
+    const focusDayId = focus.dayId;
+    const involvedDays = new Set([focusDayId]);
+    const groupedContributorMap = new Map();
+    causalEdges.forEach(edge => {
+      if (!focus.memberIds.includes(edge.source)) return;
+      const causeNode = nodeById.get(edge.target); if (!causeNode) return;
+      const causeDayId = nodeDayMap.get(causeNode.id); if (!causeDayId) return;
+      involvedDays.add(causeDayId);
+      const aggregateKey = `${causeDayId}:${causeNode.type}:${prettifyNodeLabel(causeNode)}`;
+      if (!groupedContributorMap.has(aggregateKey)) groupedContributorMap.set(aggregateKey, { id: `cause-${sanitizeMetricKey(aggregateKey)}`, type: causeNode.type, label: prettifyNodeLabel(causeNode), dayId: causeDayId, sourceNode: causeNode, confidence: Number(edge.data?.confidence || 0), detail: edge.data?.detail || '', reason: edge.data?.reason || '', edgeType: edge.type, count: 0 });
+      const c = groupedContributorMap.get(aggregateKey);
+      c.count += 1; c.confidence = Math.max(c.confidence, Number(edge.data?.confidence || 0));
+      if (!c.detail && edge.data?.detail) c.detail = edge.data.detail;
+    });
+    const orderedDays = dayNodes.filter(d => involvedDays.has(d.id));
+    const elements = [];
+    const includedDayIds = new Set(orderedDays.map(d => d.id));
+    orderedDays.forEach(day => {
+      elements.push({ data: { id: day.id, label: day.label, type: day.type, date: day.data?.date, overallScore: day.data?.overallScore } });
+    });
+    const focusNodeId = `trace-symptom-${sanitizeMetricKey(focus.id)}`;
+    elements.push({ data: { id: focusNodeId, label: `${capitalize(focus.label.split(' · ').pop().split(' ')[0])} ${focus.severity}/5`, type: 'Symptom', severity: focus.severity, date: focus.date, symptomType: focus.symptomType, count: focus.memberIds.length, focusKey: focus.id } });
+    elements.push({ data: { id: `trace-focus-day-${focusDayId}`, source: focusDayId, target: focusNodeId, type: 'ON_DAY', label: 'Occurred on' } });
+    Array.from(groupedContributorMap.values()).sort((a, b) => String(a.dayId).localeCompare(String(b.dayId)) || a.label.localeCompare(b.label)).forEach(item => {
+      if (!includedDayIds.has(item.dayId)) return;
+      const contributorLabel = item.count > 1 ? `${item.label} ×${item.count}` : item.label;
+      elements.push({ data: { id: item.id, label: contributorLabel, type: item.type, date: nodeById.get(item.dayId)?.data?.date, confidence: item.confidence, detail: item.detail || `${contributorLabel} was linked to this symptom change.`, reason: item.reason, ...item.sourceNode.data } });
+      elements.push({ data: { id: `trace-day-link-${item.dayId}-${item.id}`, source: item.dayId, target: item.id, type: item.type === 'Trigger' ? 'TRIGGERED_ON' : 'ON_DAY', label: 'Captured on' } });
+      elements.push({ data: { id: `trace-cause-${item.id}-${focusNodeId}`, source: item.id, target: focusNodeId, type: item.edgeType, confidence: item.confidence, detail: item.detail, reason: item.reason, label: item.edgeType === 'LIKELY_CAUSED_BY' ? 'Likely contributor' : 'May have worsened' } });
+    });
+    for (let i = 0; i < orderedDays.length - 1; i++) {
+      elements.push({ data: { id: `trace-next-${orderedDays[i].id}-${orderedDays[i + 1].id}`, source: orderedDays[i].id, target: orderedDays[i + 1].id, type: 'NEXT_DAY', label: 'Next day' } });
+    }
+    return { elements, layout: { name: 'dagre', rankDir: 'TB', nodeSep: 60, rankSep: 100, edgeSep: 20, animate: true, animationDuration: 400, fit: true, padding: 60 } };
+  };
+  return { hasData: focusItems.length > 0 || dayNodes.length > 0, focusItems, defaultFocusId: focusItems[0]?.id || null, build };
+}
+
+function buildSelectionDetails(cy, selectedNode) {
+  const data = selectedNode.data();
+  const primary = document.createElement('div');
+  primary.className = 'n-graph-panel-card';
+  primary.innerHTML = `<div class="n-graph-selection-title">${escapeHtml(data.label || data.type || 'Selected')}</div>
+    <div class="n-graph-selection-meta">${buildMetaPill(prettifyType(data.type))}${data.date ? buildMetaPill(prettyDate(data.date)) : ''}${typeof data.severity === 'number' ? buildMetaPill(`Severity ${data.severity}/5`) : ''}${typeof data.hours === 'number' ? buildMetaPill(`${data.hours}h sleep`) : ''}${typeof data.overallScore === 'number' ? buildMetaPill(`Score ${Number(data.overallScore).toFixed(1)}`) : ''}</div>`;
+  const secondary = document.createElement('div');
+  secondary.className = 'n-graph-panel-card';
+  secondary.innerHTML = `<h4>${escapeHtml(I18n.t('graph_attention'))}</h4>`;
+  const callouts = document.createElement('div');
+  callouts.className = 'n-graph-callout-list';
+  if (data.type === 'Symptom') {
+    const causalE = selectedNode.connectedEdges().filter(e => e.data('type') === 'LIKELY_CAUSED_BY' || e.data('type') === 'WORSENED_BY');
+    if (causalE.length === 0) callouts.appendChild(buildCallout(I18n.t('graph_no_contributor'), I18n.t('graph_no_contributor_desc')));
+    else causalE.forEach(e => { const cause = e.source().id() === selectedNode.id() ? e.target() : e.source(); callouts.appendChild(buildCallout(cause.data('label'), e.data('detail') || `${cause.data('label')} is connected.`)); });
+  } else if (data.type === 'Day') {
+    const events = selectedNode.connectedEdges().filter(e => e.data('type') === 'ON_DAY' || e.data('type') === 'TRIGGERED_ON').connectedNodes().filter(n => n.id() !== selectedNode.id());
+    if (events.length === 0) callouts.appendChild(buildCallout(I18n.t('graph_quiet'), I18n.t('graph_quiet_desc')));
+    else { const grouped = {}; events.forEach(n => { grouped[n.data('type')] = (grouped[n.data('type')] || 0) + 1; }); Object.entries(grouped).forEach(([type, count]) => { callouts.appendChild(buildCallout(prettifyType(type), `${count} event${count === 1 ? '' : 's'} recorded.`)); }); }
+  } else {
+    const linked = selectedNode.connectedEdges().connectedNodes().filter(n => n.id() !== selectedNode.id() && n.data('type') === 'Symptom');
+    if (linked.length === 0) callouts.appendChild(buildCallout(I18n.t('graph_context'), I18n.t('graph_context_desc')));
+    else linked.forEach(n => callouts.appendChild(buildCallout(capitalize(n.data('type')), `${escapeHtml(n.data('label'))} was connected.`)));
+  }
+  secondary.appendChild(callouts);
+  secondary.appendChild(buildLegend());
+  return { primary, secondary };
+}
+
+function graphStyles() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const nodeBg = isDark ? '#1C2236' : '#E2E8F0';
+  const nodeText = isDark ? '#E2E8F0' : '#0F172A';
+  const edgeColor = isDark ? 'rgba(148,163,184,0.3)' : '#CBD5E1';
+  return [
+    { selector: 'node', style: { 'background-color': nodeBg, label: 'data(label)', 'font-family': 'DM Sans', 'font-size': 12, 'font-weight': 500, 'text-wrap': 'wrap', 'text-max-width': 100, 'text-valign': 'center', 'text-halign': 'center', color: nodeText, 'border-width': 3, 'border-color': isDark ? 'rgba(148,163,184,0.2)' : '#FFFFFF', width: 60, height: 60, 'shadow-blur': 12, 'shadow-color': 'rgba(0,0,0,0.08)', 'shadow-offset-x': 0, 'shadow-offset-y': 2, 'overlay-padding': 8, 'overlay-opacity': 0, 'transition-property': 'opacity', 'transition-duration': '0.3s' } },
+    { selector: 'node[type="Day"]', style: { shape: 'round-rectangle', 'background-color': isDark ? '#1C2236' : '#E2E8F0', 'border-color': isDark ? 'rgba(148,163,184,0.2)' : '#CBD5E1', width: 120, height: 42, 'font-size': 12 } },
+    { selector: 'node[type="MoodEntry"]', style: { 'background-color': isDark ? 'rgba(37,99,235,0.25)' : '#DBEAFE', color: isDark ? '#93C5FD' : '#2563EB' } },
+    { selector: 'node[type="SleepEntry"]', style: { 'background-color': isDark ? 'rgba(124,58,237,0.25)' : '#EDE9FE', color: isDark ? '#C4B5FD' : '#7C3AED' } },
+    { selector: 'node[type="Symptom"]', style: { 'background-color': isDark ? 'rgba(220,38,38,0.25)' : '#FEE2E2', color: isDark ? '#FCA5A5' : '#DC2626', 'font-weight': 600, width: 'mapData(severity, 1, 5, 56, 78)', height: 'mapData(severity, 1, 5, 56, 78)' } },
+    { selector: 'node[type="MedicationDose"]', style: { 'background-color': isDark ? 'rgba(15,118,110,0.25)' : '#D1FAE5', color: isDark ? '#5EEAD4' : '#0F766E' } },
+    { selector: 'node[type="Trigger"]', style: { 'background-color': isDark ? 'rgba(217,119,6,0.25)' : '#FFEDD5', color: isDark ? '#FCD34D' : '#D97706' } },
+    { selector: 'node[type="Activity"]', style: { 'background-color': isDark ? 'rgba(20,184,166,0.25)' : '#CCFBF1', color: isDark ? '#5EEAD4' : '#14B8A6' } },
+    { selector: 'node:selected', style: { 'border-color': isDark ? '#60A5FA' : '#2563EB', 'border-width': 4, 'shadow-blur': 16, 'shadow-color': isDark ? 'rgba(96,165,250,0.3)' : 'rgba(37,99,235,0.2)' } },
+    { selector: 'edge', style: { 'curve-style': 'taxi', 'taxi-direction': 'downward', 'taxi-turn': '20px', width: 1.5, 'line-color': edgeColor, 'target-arrow-color': edgeColor, 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, label: '', 'font-family': 'DM Sans', 'font-size': 9, 'text-background-color': isDark ? '#141927' : '#FFFFFF', 'text-background-opacity': 0.85, 'text-background-padding': 2, color: isDark ? '#94A3B8' : '#475569', 'transition-property': 'opacity', 'transition-duration': '0.3s' } },
+    { selector: 'edge[type="ON_DAY"]', style: { 'line-color': edgeColor, 'target-arrow-shape': 'none', 'curve-style': 'taxi', label: 'data(label)' } },
+    { selector: 'edge[type="TRIGGERED_ON"]', style: { 'line-color': isDark ? 'rgba(251,191,36,0.5)' : '#FDBA74', 'target-arrow-color': isDark ? 'rgba(251,191,36,0.5)' : '#FDBA74', 'line-style': 'dashed', label: 'data(label)' } },
+    { selector: 'edge[type="NEXT_DAY"]', style: { 'line-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'target-arrow-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'curve-style': 'straight', width: 1.5, 'line-style': 'dotted' } },
+    { selector: 'edge[type="LIKELY_CAUSED_BY"]', style: { 'line-color': isDark ? 'rgba(96,165,250,0.6)' : '#2563EB', 'target-arrow-color': isDark ? 'rgba(96,165,250,0.6)' : '#2563EB', width: 'mapData(confidence, 0, 1, 2, 6)', label: 'data(label)' } },
+    { selector: 'edge[type="WORSENED_BY"]', style: { 'line-color': isDark ? 'rgba(248,113,113,0.6)' : '#EA580C', 'target-arrow-color': isDark ? 'rgba(248,113,113,0.6)' : '#EA580C', width: 'mapData(confidence, 0, 1, 2, 6)', 'line-style': 'dashed', label: 'data(label)' } },
+  ];
+}
+
+function buildGraphInfoCard(title, body) { const c = document.createElement('div'); c.className = 'n-graph-panel-card'; c.innerHTML = `<h4>${escapeHtml(title)}</h4><p>${escapeHtml(body)}</p>`; return c; }
+function buildCallout(title, body) { const c = document.createElement('div'); c.className = 'n-graph-callout'; c.innerHTML = `<strong>${escapeHtml(title)}</strong><span>${escapeHtml(body)}</span>`; return c; }
+function buildLegend() {
+  const l = document.createElement('div'); l.className = 'n-graph-legend';
+  [['#FEE2E2', 'legend_symptom'], ['#EDE9FE', 'legend_sleep'], ['#D1FAE5', 'legend_medication'], ['#FFEDD5', 'legend_trigger'], ['#CCFBF1', 'legend_activity']].forEach(([color, key]) => {
+    const i = document.createElement('div'); i.className = 'n-graph-legend__item';
+    i.innerHTML = `<span class="n-graph-legend__swatch" style="background:${color}"></span>${escapeHtml(I18n.t(key))}`;
+    l.appendChild(i);
+  }); return l;
+}
+function buildGraphEmpty(msg) { const d = document.createElement('div'); d.className = 'n-graph-empty'; d.textContent = msg; return d; }
+function buildMetaPill(text) { return `<span class="n-graph-meta-pill">${escapeHtml(text)}</span>`; }
+
+// ── Care Plan ──
+function buildReminderSetupCard(reminders) {
+  const meds = Array.isArray(reminders?.medications) ? reminders.medications : [];
+  const custom = Array.isArray(reminders?.customReminders) ? reminders.customReminders : [];
+  const schedule = reminders?.checkInSchedule || null;
+  const card = makeCard(I18n.t('care_plan_title'), I18n.t('care_plan_desc'), '#2563EB', 'rgba(37,99,235,0.08)');
+  card.classList.add('full-width', 'n-care-plan-card');
+  const grid = document.createElement('div');
+  grid.className = 'n-care-plan-grid';
+  const col1 = document.createElement('div'); col1.className = 'n-care-plan-column';
+  col1.appendChild(buildOverviewPanel(schedule, meds, custom));
+  col1.appendChild(buildMedPanel(meds));
+  const col2 = document.createElement('div'); col2.className = 'n-care-plan-column';
+  col2.appendChild(buildReminderEditorPanel());
+  col2.appendChild(buildReminderListPanel(custom));
+  grid.appendChild(col1); grid.appendChild(col2);
+  card.appendChild(grid);
+  return card;
+}
+
+function buildOverviewPanel(schedule, meds, custom) {
+  const p = document.createElement('div'); p.className = 'n-care-plan-panel';
+  p.innerHTML = `<h4>${escapeHtml(I18n.t('current_plan'))}</h4>`;
+  const meta = document.createElement('div'); meta.className = 'n-care-plan-meta';
+  meta.appendChild(makePill(I18n.t('custom_reminders_label'), `${custom.length}`));
+  meta.appendChild(makePill(I18n.t('active_meds'), `${meds.length}`));
+  const morningEnabled = Boolean(scheduleValue(schedule, 'morningEnabled', false));
+  const eveningEnabled = Boolean(scheduleValue(schedule, 'eveningEnabled', false));
+  if (morningEnabled) meta.appendChild(makePill(I18n.t('morning_checkin'), scheduleValue(schedule, 'morningTime', '08:00')));
+  if (eveningEnabled) meta.appendChild(makePill(I18n.t('evening_checkin'), scheduleValue(schedule, 'eveningTime', '20:00')));
+  if (!morningEnabled && !eveningEnabled) meta.appendChild(makePill(I18n.t('checkins_label'), I18n.t('no_schedule')));
+  p.appendChild(meta); return p;
+}
+
+function buildMedPanel(meds) {
+  const p = document.createElement('div'); p.className = 'n-care-plan-panel';
+  p.innerHTML = `<h4>${escapeHtml(I18n.t('med_schedule'))}</h4>`;
+  if (meds.length === 0) { const e = document.createElement('div'); e.className = 'n-care-plan-empty'; e.textContent = I18n.t('no_meds'); p.appendChild(e); return p; }
+  const list = document.createElement('div'); list.className = 'n-reminder-list';
+  meds.forEach(med => {
+    const name = anyValue(med.name, 'Medication');
+    const dosage = anyValue(med.dosage, null);
+    const sched = arrayValue(med.schedule);
+    const row = document.createElement('div'); row.className = 'n-reminder-row';
+    row.innerHTML = `<div><div class="n-reminder-row__title">${escapeHtml(name)}</div><div class="n-reminder-row__note">${escapeHtml([dosage, sched.join(', ')].filter(Boolean).join(' · ') || 'No dose details')}</div></div>`;
+    list.appendChild(row);
+  });
+  p.appendChild(list); return p;
+}
+
+function buildReminderEditorPanel() {
+  const p = document.createElement('div'); p.className = 'n-care-plan-panel';
+  p.innerHTML = `<h4>${escapeHtml(reminderDraft.id ? I18n.t('edit_reminder') : I18n.t('add_reminder'))}</h4>`;
+  const form = document.createElement('div'); form.className = 'n-reminder-form';
+  const titleInput = document.createElement('input'); titleInput.type = 'text'; titleInput.className = 'n-input';
+  titleInput.placeholder = I18n.t('reminder_placeholder'); titleInput.value = reminderDraft.title;
+  titleInput.oninput = e => { reminderDraft.title = e.target.value; };
+  form.appendChild(titleInput);
+  const row = document.createElement('div'); row.className = 'n-reminder-form__row';
+  const noteInput = document.createElement('textarea'); noteInput.className = 'n-input';
+  noteInput.placeholder = I18n.t('note_placeholder'); noteInput.value = reminderDraft.note;
+  noteInput.oninput = e => { reminderDraft.note = e.target.value; };
+  row.appendChild(noteInput);
+  const timeInput = document.createElement('input'); timeInput.type = 'time'; timeInput.className = 'n-input';
+  timeInput.value = reminderDraft.time; timeInput.oninput = e => { reminderDraft.time = e.target.value; };
+  row.appendChild(timeInput); form.appendChild(row);
+  const actions = document.createElement('div'); actions.className = 'n-reminder-form__actions';
+  if (reminderDraft.id) {
+    const cancelBtn = document.createElement('button'); cancelBtn.className = 'n-btn n-btn--secondary';
+    cancelBtn.textContent = I18n.t('cancel');
+    cancelBtn.onclick = () => { reminderDraft = { id: null, title: '', note: '', time: '09:00', isEnabled: true }; renderCurrentDashboard(); };
+    actions.appendChild(cancelBtn);
+  }
+  const saveBtn = document.createElement('button'); saveBtn.className = 'n-btn n-btn--primary';
+  saveBtn.textContent = reminderDraft.id ? I18n.t('update_btn') : I18n.t('add_btn');
+  saveBtn.disabled = !reminderDraft.title.trim();
+  saveBtn.onclick = () => saveReminderDraft();
+  actions.appendChild(saveBtn); form.appendChild(actions); p.appendChild(form); return p;
+}
+
+function buildReminderListPanel(customReminders) {
+  const p = document.createElement('div'); p.className = 'n-care-plan-panel';
+  p.innerHTML = `<h4>${escapeHtml(I18n.t('custom_reminders'))}</h4>`;
+  if (customReminders.length === 0) { const e = document.createElement('div'); e.className = 'n-care-plan-empty'; e.textContent = I18n.t('no_reminders'); p.appendChild(e); return p; }
+  const list = document.createElement('div'); list.className = 'n-reminder-list';
+  customReminders.forEach(rem => {
+    const id = anyValue(rem.id, ''); const title = anyValue(rem.title, 'Reminder'); const note = anyValue(rem.note, '');
+    const sched = arrayValue(rem.schedule); const isEnabled = boolValue(rem.isEnabled, true);
+    const createdBy = objectValue(rem.createdBy);
+    const row = document.createElement('div'); row.className = 'n-reminder-row';
+    const content = document.createElement('div');
+    content.innerHTML = `<div class="n-reminder-row__title">${escapeHtml(title)}</div>${note ? `<div class="n-reminder-row__note">${escapeHtml(note)}</div>` : ''}`;
+    const meta = document.createElement('div'); meta.className = 'n-reminder-row__meta';
+    meta.appendChild(makePill(I18n.t('time_label'), sched.join(', ') || I18n.t('no_schedule')));
+    meta.appendChild(makePill(I18n.t('status_label'), isEnabled ? I18n.t('enabled') : I18n.t('paused')));
+    if (createdBy?.role === 'caregiver') meta.appendChild(makePill(I18n.t('created_by'), createdBy.name || I18n.t('caregiver_label')));
+    content.appendChild(meta); row.appendChild(content);
+    const acts = document.createElement('div'); acts.className = 'n-reminder-row__actions';
+    const editBtn = document.createElement('button'); editBtn.className = 'n-btn n-btn--secondary'; editBtn.textContent = I18n.t('edit');
+    editBtn.onclick = () => { reminderDraft = { id, title, note, time: sched[0] || '09:00', isEnabled }; renderCurrentDashboard(); };
+    acts.appendChild(editBtn);
+    const delBtn = document.createElement('button'); delBtn.className = 'n-btn n-btn--danger'; delBtn.textContent = I18n.t('delete_btn');
+    delBtn.onclick = () => deleteReminderFromDashboard(id);
+    acts.appendChild(delBtn); row.appendChild(acts); list.appendChild(row);
+  });
+  p.appendChild(list); return p;
+}
+
+function makePill(label, value) { const p = document.createElement('div'); p.className = 'n-pill'; p.innerHTML = `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(String(value))}`; return p; }
+
+async function saveReminderDraft() {
+  if (!selectedMemberId || !reminderDraft.title.trim()) return;
+  await getToken();
+  const payload = { title: reminderDraft.title.trim(), note: reminderDraft.note.trim() || undefined, schedule: [reminderDraft.time || '09:00'], isEnabled: reminderDraft.isEnabled };
+  const url = reminderDraft.id ? `/api/caregiver/members/${selectedMemberId}/reminders/${reminderDraft.id}` : `/api/caregiver/members/${selectedMemberId}/reminders`;
+  const res = await fetch(url, { method: reminderDraft.id ? 'PUT' : 'POST', headers: { ...authHeaders(), 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+  if (!res.ok) { alert(`Reminder save failed (${res.status}).`); return; }
+  currentDashboardData.reminders = await fetchMemberReminders(selectedMemberId, authHeaders());
+  reminderDraft = { id: null, title: '', note: '', time: '09:00', isEnabled: true };
+  renderCurrentDashboard();
+}
+
+async function deleteReminderFromDashboard(reminderId) {
+  if (!selectedMemberId || !reminderId) return;
+  await getToken();
+  const res = await fetch(`/api/caregiver/members/${selectedMemberId}/reminders/${reminderId}`, { method: 'DELETE', headers: authHeaders() });
+  if (!res.ok) { alert(`Delete failed (${res.status}).`); return; }
+  currentDashboardData.reminders = await fetchMemberReminders(selectedMemberId, authHeaders());
+  if (reminderDraft.id === reminderId) reminderDraft = { id: null, title: '', note: '', time: '09:00', isEnabled: true };
+  renderCurrentDashboard();
+}
+
+// ── Voice Messages ──
+function buildVoiceMessagesCard() {
+  const card = makeCard(I18n.t('voice_title'), I18n.t('voice_desc'), '#7C3AED', 'rgba(124,58,237,0.10)');
+  card.classList.add('full-width', 'n-voice-card');
+  const shell = document.createElement('div'); shell.className = 'n-voice-shell';
+  const composer = document.createElement('div'); composer.className = 'n-voice-panel';
+  composer.innerHTML = `<h4>${escapeHtml(I18n.t('record_message'))}</h4>`;
+  const status = document.createElement('div'); status.className = 'n-voice-status';
+  status.textContent = voiceComposerState.error || voiceComposerState.statusMessage || I18n.t('voice_default');
+  composer.appendChild(status);
+  const actions = document.createElement('div'); actions.className = 'n-voice-actions';
+  const recordBtn = document.createElement('button'); recordBtn.className = 'n-btn n-btn--primary';
+  recordBtn.textContent = voiceComposerState.isRecording ? I18n.t('recording_active') : I18n.t('start_recording');
+  recordBtn.disabled = voiceComposerState.isRecording;
+  recordBtn.onclick = () => startVoiceRecording();
+  actions.appendChild(recordBtn);
+  const stopBtn = document.createElement('button'); stopBtn.className = 'n-btn n-btn--secondary';
+  stopBtn.textContent = I18n.t('stop'); stopBtn.disabled = !voiceComposerState.isRecording;
+  stopBtn.onclick = () => stopVoiceRecording();
+  actions.appendChild(stopBtn);
+  const sendBtn = document.createElement('button'); sendBtn.className = 'n-btn n-btn--primary';
+  sendBtn.textContent = I18n.t('send_to_member');
+  sendBtn.disabled = !voiceComposerState.audioBase64 || voiceComposerState.isSending;
+  sendBtn.onclick = () => sendVoiceMessage();
+  actions.appendChild(sendBtn);
+  const resetBtn = document.createElement('button'); resetBtn.className = 'n-btn n-btn--secondary';
+  resetBtn.textContent = I18n.t('discard');
+  resetBtn.disabled = !voiceComposerState.audioBase64 && !voiceComposerState.isRecording;
+  resetBtn.onclick = () => { resetVoiceComposer(); renderCurrentDashboard(); };
+  actions.appendChild(resetBtn);
+  composer.appendChild(actions);
+  const meter = document.createElement('div'); meter.className = 'n-voice-meter';
+  meter.appendChild(makePill(I18n.t('duration_label'), voiceComposerState.durationSeconds ? `${Math.round(voiceComposerState.durationSeconds)}s` : '0s'));
+  meter.appendChild(makePill(I18n.t('format_label'), voiceComposerState.mimeType || 'audio/wav'));
+  if (voiceComposerState.sentAt) meter.appendChild(makePill(I18n.t('last_sent'), voiceComposerState.sentAt));
+  composer.appendChild(meter);
+  const note = document.createElement('div'); note.className = 'n-voice-note'; note.textContent = I18n.t('voice_note');
+  composer.appendChild(note);
+  const inbox = document.createElement('div'); inbox.className = 'n-voice-panel';
+  inbox.innerHTML = `<h4>${escapeHtml(I18n.t('delivery'))}</h4>`;
+  const delivery = document.createElement('div'); delivery.className = 'n-voice-note'; delivery.textContent = I18n.t('delivery_desc');
+  inbox.appendChild(delivery);
+  shell.appendChild(composer); shell.appendChild(inbox);
+  card.appendChild(shell); return card;
+}
+
+async function startVoiceRecording() {
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microphone not supported.');
+    voiceComposerState.error = ''; voiceComposerState.statusMessage = I18n.t('mic_active');
+    voiceComposerState.isRecording = true; voiceComposerState.audioBase64 = null; voiceComposerState.durationSeconds = 0;
+    voiceRecorderSession = await createWavRecorder();
+  } catch (e) { voiceComposerState.isRecording = false; voiceComposerState.error = e.message; }
+  finally { renderCurrentDashboard(); }
+}
+
+async function stopVoiceRecording() {
+  if (!voiceRecorderSession) return;
+  try {
+    const result = await voiceRecorderSession.stop();
+    voiceComposerState.audioBase64 = await arrayBufferToBase64(result.arrayBuffer);
+    voiceComposerState.durationSeconds = result.durationSeconds;
+    voiceComposerState.statusMessage = I18n.t('recording_ready');
+    voiceComposerState.mimeType = 'audio/wav';
+  } catch (e) { voiceComposerState.error = e.message; }
+  finally { voiceComposerState.isRecording = false; voiceRecorderSession = null; renderCurrentDashboard(); }
+}
+
+async function sendVoiceMessage() {
+  if (!selectedMemberId || !voiceComposerState.audioBase64) return;
+  await getToken();
+  voiceComposerState.isSending = true; voiceComposerState.error = '';
+  voiceComposerState.statusMessage = I18n.t('sending');
+  renderCurrentDashboard();
+  try {
+    const res = await fetch(`/api/caregiver/members/${selectedMemberId}/voice-messages`, {
+      method: 'POST', headers: { ...authHeaders(), 'content-type': 'application/json' },
+      body: JSON.stringify({ audioBase64: voiceComposerState.audioBase64, mimeType: voiceComposerState.mimeType, durationSeconds: Math.max(1, voiceComposerState.durationSeconds) }),
+    });
+    if (!res.ok) throw new Error(`Send failed (${res.status}).`);
+    voiceComposerState = { isRecording: false, isSending: false, statusMessage: I18n.t('sent_success'), error: '', audioBase64: null, mimeType: 'audio/wav', durationSeconds: 0, sentAt: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) };
+  } catch (e) { voiceComposerState.isSending = false; voiceComposerState.error = e.message; }
+  finally { voiceComposerState.isSending = false; renderCurrentDashboard(); }
+}
+
+function resetVoiceComposer() {
+  if (voiceRecorderSession) { voiceRecorderSession.stop().catch(() => {}); voiceRecorderSession = null; }
+  voiceComposerState = { isRecording: false, isSending: false, statusMessage: '', error: '', audioBase64: null, mimeType: 'audio/wav', durationSeconds: 0, sentAt: '' };
+}
+
+async function createWavRecorder() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) throw new Error('AudioContext unavailable.');
+  const audioContext = new AudioCtx();
+  const source = audioContext.createMediaStreamSource(stream);
+  const processor = audioContext.createScriptProcessor(4096, 1, 1);
+  const chunks = []; const startedAt = performance.now();
+  processor.onaudioprocess = e => chunks.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+  source.connect(processor); processor.connect(audioContext.destination);
+  return { async stop() {
+    processor.disconnect(); source.disconnect(); stream.getTracks().forEach(t => t.stop()); await audioContext.close();
+    const sampleRate = audioContext.sampleRate || 44100;
+    const merged = mergeFloat32Chunks(chunks);
+    const downsampled = sampleRate === 16000 ? merged : downsampleBuffer(merged, sampleRate, 16000);
+    return { arrayBuffer: encodeWav(downsampled, 16000), durationSeconds: (performance.now() - startedAt) / 1000 };
+  }};
+}
+
+function mergeFloat32Chunks(chunks) { const total = chunks.reduce((s, c) => s + c.length, 0); const m = new Float32Array(total); let o = 0; chunks.forEach(c => { m.set(c, o); o += c.length; }); return m; }
+
+function downsampleBuffer(buffer, inputRate, outputRate) {
+  if (outputRate >= inputRate) return buffer;
+  const ratio = inputRate / outputRate; const newLen = Math.round(buffer.length / ratio);
+  const result = new Float32Array(newLen); let oR = 0, oB = 0;
+  while (oR < result.length) { const next = Math.round((oR + 1) * ratio); let acc = 0, cnt = 0; for (let i = oB; i < next && i < buffer.length; i++) { acc += buffer[i]; cnt++; } result[oR] = cnt ? acc / cnt : 0; oR++; oB = next; }
+  return result;
+}
+
+function encodeWav(samples, sampleRate) {
+  const buf = new ArrayBuffer(44 + samples.length * 2); const v = new DataView(buf);
+  writeAscii(v, 0, 'RIFF'); v.setUint32(4, 36 + samples.length * 2, true); writeAscii(v, 8, 'WAVE');
+  writeAscii(v, 12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sampleRate, true); v.setUint32(28, sampleRate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  writeAscii(v, 36, 'data'); v.setUint32(40, samples.length * 2, true);
+  let o = 44; for (let i = 0; i < samples.length; i++, o += 2) { const s = Math.max(-1, Math.min(1, samples[i])); v.setInt16(o, s < 0 ? s * 0x8000 : s * 0x7FFF, true); }
+  return buf;
+}
+
+function writeAscii(v, o, t) { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); }
+
+async function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer); let binary = ''; const cs = 0x8000;
+  for (let i = 0; i < bytes.length; i += cs) binary += String.fromCharCode(...bytes.subarray(i, i + cs));
+  return btoa(binary);
+}
+
+// ── Sparklines ──
+function makeSparklineRow(label, series, dates, colors, unit, maxVal) {
+  const row = document.createElement('div'); row.className = 'n-sparkline';
+  const lastVal = lastNonNull(series);
+  const displayVal = lastVal !== null ? `${lastVal}${unit}` : '—';
+  row.innerHTML = `<div class="n-sparkline__label">${escapeHtml(label)}</div><canvas class="n-sparkline__canvas" data-sparkline></canvas><div class="n-sparkline__value" style="color:${colors.text}">${displayVal}</div>`;
+  const canvas = row.querySelector('canvas');
+  canvas._sparkData = { series, colors, maxVal };
+  return row;
+}
+
+function drawSparkline(canvas) {
+  const { series, colors, maxVal } = canvas._sparkData;
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const w = rect.width, h = rect.height;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d'); ctx.scale(dpr, dpr);
+  const points = []; for (let i = 0; i < series.length; i++) { if (series[i] !== null) points.push({ x: i, y: series[i] }); }
+  if (points.length < 2) return;
+  const pad = 2, chartW = w - pad * 2, chartH = h - pad * 2;
+  const xScale = chartW / (series.length - 1);
+  const effectiveMax = maxVal || Math.max(...points.map(p => p.y), 1);
+  function px(p) { return { x: pad + p.x * xScale, y: pad + chartH - (p.y / effectiveMax) * chartH }; }
+
+  // Smooth bezier fill
+  const first = px(points[0]), last = px(points[points.length - 1]);
+  ctx.beginPath(); ctx.moveTo(first.x, h); ctx.lineTo(first.x, first.y);
+  for (let i = 1; i < points.length; i++) { const prev = px(points[i-1]), curr = px(points[i]); const cpx = (prev.x + curr.x) / 2; ctx.quadraticCurveTo(prev.x, prev.y, cpx, (prev.y + curr.y) / 2); }
+  ctx.lineTo(last.x, last.y); ctx.lineTo(last.x, h); ctx.closePath();
+  const grad = ctx.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, colors.fill); grad.addColorStop(1, 'transparent');
+  ctx.fillStyle = grad; ctx.fill();
+
+  // Smooth bezier line
+  ctx.beginPath(); ctx.moveTo(first.x, first.y);
+  for (let i = 1; i < points.length; i++) { const prev = px(points[i-1]), curr = px(points[i]); const cpx = (prev.x + curr.x) / 2; ctx.quadraticCurveTo(prev.x, prev.y, cpx, (prev.y + curr.y) / 2); }
+  ctx.lineTo(last.x, last.y);
+  ctx.strokeStyle = colors.line; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
+
+  // Glow dot
+  ctx.beginPath(); ctx.arc(last.x, last.y, 4, 0, Math.PI * 2); ctx.fillStyle = colors.line; ctx.fill();
+  ctx.beginPath(); ctx.arc(last.x, last.y, 6, 0, Math.PI * 2); ctx.strokeStyle = colors.fill; ctx.lineWidth = 2; ctx.stroke();
+}
+
+// ── Utils ──
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+function prettyDate(value) { try { const [y, m, d] = String(value).split('-').map(Number); if (!y || !m || !d) return value; return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(Date.UTC(y, m - 1, d, 12))); } catch { return value; } }
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function prettifyMetric(name) { const m = { mood: 'Mood', sleepHours: 'Sleep hours', sleepQuality: 'Sleep quality', medAdherence: 'Med adherence' }; return m[name] || capitalize(name); }
+function prettifyNodeLabel(node) {
+  if (node.type === 'Symptom') return `${capitalize(node.data?.type || node.label)} ${node.data?.severity ? node.data.severity + '/5' : ''}`.trim();
+  if (node.type === 'MedicationDose') return `${node.data?.medicationName || node.label}${node.data?.status ? ` (${node.data.status})` : ''}`;
+  if (node.type === 'SleepEntry' && typeof node.data?.hours === 'number') return `${node.data.hours}h sleep`;
+  if (node.type === 'MoodEntry' && typeof node.data?.score === 'number') return `Mood ${node.data.score}/5`;
+  return node.label;
+}
+function prettifyType(type) { const m = { Day: 'Day', MoodEntry: 'Mood', SleepEntry: 'Sleep', Symptom: 'Symptom', MedicationDose: 'Medication', Trigger: 'Trigger', Activity: 'Activity', Concern: 'Concern', PatternMetric: 'Pattern' }; return m[type] || type; }
+function sanitizeMetricKey(v) { return String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+function noData() { const d = document.createElement('div'); d.className = 'n-empty__text'; d.textContent = I18n.t('no_data'); return d; }
+function hasData(s) { return s && s.some(v => v !== null); }
+function lastNonNull(a) { if (!a) return null; for (let i = a.length - 1; i >= 0; i--) { if (a[i] !== null) return a[i]; } return null; }
+function average(a) { if (!a) return null; const n = a.filter(v => v !== null); if (n.length === 0) return null; return n.reduce((s, v) => s + v, 0) / n.length; }
+function scheduleValue(schedule, key, fallback) { if (!schedule) return fallback; const r = schedule[key]; if (r && typeof r === 'object' && 'value' in r) return r.value ?? fallback; return r ?? fallback; }
+function anyValue(raw, fallback = '') { if (raw && typeof raw === 'object' && 'value' in raw) return raw.value ?? fallback; return raw ?? fallback; }
+function arrayValue(raw) { const v = anyValue(raw, []); return Array.isArray(v) ? v.filter(i => typeof i === 'string') : []; }
+function boolValue(raw, fallback = false) { const v = anyValue(raw, fallback); return typeof v === 'boolean' ? v : fallback; }
+function objectValue(raw) { const v = anyValue(raw, null); return v && typeof v === 'object' && !Array.isArray(v) ? v : null; }
+
+function normalizeTimeSeriesRange(timeSeries, start, end) {
+  const source = timeSeries || {};
+  const rangeDates = enumerateIsoDates(start, end);
+  const dateIndex = new Map((source.dates || []).map((d, i) => [d, i]));
+  const pick = (series, date) => { if (!Array.isArray(series)) return null; const idx = dateIndex.get(date); return idx !== undefined ? (series[idx] ?? null) : null; };
+  const normalized = { dates: rangeDates, moodSeries: rangeDates.map(d => pick(source.moodSeries, d)), sleepHoursSeries: rangeDates.map(d => pick(source.sleepHoursSeries, d)), sleepQualitySeries: rangeDates.map(d => pick(source.sleepQualitySeries, d)), medAdherenceSeries: rangeDates.map(d => pick(source.medAdherenceSeries, d)), symptomSeries: {} };
+  Object.entries(source.symptomSeries || {}).forEach(([type, series]) => { normalized.symptomSeries[type] = rangeDates.map(d => pick(series, d)); });
+  normalized.missingDates = rangeDates.filter((date, idx) => {
+    const hasCore = [normalized.moodSeries[idx], normalized.sleepHoursSeries[idx], normalized.sleepQualitySeries[idx], normalized.medAdherenceSeries[idx]].some(v => v !== null && v !== undefined);
+    const hasSym = Object.values(normalized.symptomSeries).some(s => s[idx] !== null && s[idx] !== undefined);
+    return !hasCore && !hasSym;
+  });
+  return normalized;
+}
+
+function enumerateIsoDates(start, end) {
+  const dates = []; const cursor = parseIsoDate(start); const last = parseIsoDate(end);
+  if (!cursor || !last || cursor > last) return dates;
+  while (cursor <= last) { dates.push(fmt(cursor)); cursor.setUTCDate(cursor.getUTCDate() + 1); }
+  return dates;
+}
+
+function parseIsoDate(value) { const [y, m, d] = String(value || '').split('-').map(Number); if (!y || !m || !d) return null; return new Date(Date.UTC(y, m - 1, d, 12)); }
+
+// ── Boot ──
+Theme.init();
+I18n.init();
+routerInit();
+
+document.getElementById('themeToggle').addEventListener('click', () => Theme.toggle());
+document.getElementById('langSelect').addEventListener('change', e => { I18n.setLang(e.target.value); renderCurrentDashboard(); });
+
+onAuthStateChanged(auth, async (user) => {
+  authResolved = true; currentUser = user;
+  if (user) {
+    setLoadingState(true, I18n.t('loading_refresh_title'), I18n.t('loading_refresh_subtitle'));
+    await getToken(); renderSignedInControls(); await checkInviteToken(); await fetchMembers();
+  } else { setLoadingState(false); isBootstrapping = false; renderSignedOutControls(); clearDashboard('signed_out'); }
+});
+
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { document.querySelectorAll('[data-sparkline]').forEach(drawSparkline); }, 200); });
+
+setLoadingState(true);
+</script>
+</body>
+</html>

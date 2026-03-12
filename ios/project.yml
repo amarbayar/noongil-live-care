@@ -1,0 +1,170 @@
+name: Noongil
+options:
+  bundleIdPrefix: com.noongil
+  deploymentTarget:
+    iOS: "16.0"
+    macOS: "15.0"
+  xcodeVersion: "16.0"
+  createIntermediateGroups: true
+
+packages:
+  MetaWearablesDAT:
+    url: https://github.com/facebook/meta-wearables-dat-ios
+    from: 0.4.0
+  FirebaseSDK:
+    url: https://github.com/firebase/firebase-ios-sdk.git
+    from: 12.5.0
+
+targets:
+  Noongil:
+    type: application
+    platform: iOS
+    sources:
+      - path: Noongil
+        excludes:
+          - "Resources/**"
+      - path: core
+      - path: features
+      - path: Resources/models
+        type: folder
+        buildPhase: resources
+      - path: Resources/espeak-ng-data
+        type: folder
+        buildPhase: resources
+        optional: true
+      - path: ../orb.html
+        buildPhase: resources
+      - path: ../config
+        type: folder
+        buildPhase: resources
+      - path: ../docs/legal
+        type: folder
+        buildPhase: resources
+      - path: GoogleService-Info.plist
+        buildPhase: resources
+        optional: true
+    settings:
+      base:
+        INFOPLIST_FILE: Noongil/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Noongil/Noongil.entitlements
+        PRODUCT_BUNDLE_IDENTIFIER: dev.example.noongil
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.9"
+        TARGETED_DEVICE_FAMILY: "1"
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_OBJC_BRIDGING_HEADER: Noongil/SherpaOnnx-Bridging-Header.h
+        HEADER_SEARCH_PATHS:
+          - "$(PROJECT_DIR)/Frameworks/sherpa-onnx.xcframework/ios-arm64/Headers"
+          - "$(PROJECT_DIR)/Frameworks/sherpa-onnx.xcframework/ios-arm64_x86_64-simulator/Headers"
+        LIBRARY_SEARCH_PATHS:
+          - "$(inherited)"
+        OTHER_LDFLAGS:
+          - "-lc++"
+          - "-framework"
+          - "Accelerate"
+    dependencies:
+      - package: MetaWearablesDAT
+        product: MWDATCore
+      - package: MetaWearablesDAT
+        product: MWDATCamera
+      - framework: Frameworks/sherpa-onnx.xcframework
+        embed: false
+      - framework: Frameworks/onnxruntime.xcframework
+        embed: false
+      - package: FirebaseSDK
+        product: FirebaseAuth
+      - package: FirebaseSDK
+        product: FirebaseFirestore
+  NoongilTests:
+    type: bundle.unit-test
+    platform: iOS
+    supportedDestinations: [iOS, macCatalyst]
+    sources:
+      - path: Tests
+      - path: core/config/Config.swift
+      - path: core/config/FeatureFlagService.swift
+      - path: core/config/PromptService.swift
+      - path: core/theme/ThemeService.swift
+      - path: core/strings/StringsService.swift
+      - path: core/extensions/Color+Hex.swift
+      - path: core/encryption/EncryptionService.swift
+      - path: core/auth/AuthService.swift
+      - path: core/models
+      - path: core/companion/CompanionProvider.swift
+      - path: core/companion/CompanionContext.swift
+      - path: core/companion/ExtractionResult.swift
+      - path: core/storage/StorageService.swift
+      - path: core/storage/LiveCheckInSessionStore.swift
+      - path: core/notifications/NotificationService.swift
+      - path: core/orb/HapticService.swift
+      - path: core/orb/AudioCueService.swift
+      - path: core/orb/OrbState.swift
+      - path: core/orb/OrbHTMLState.swift
+      - path: core/orb/CompanionHomeOrbChrome.swift
+      - path: core/orb/CompanionHomeBackgroundStyle.swift
+      - path: core/orb/OrbRotationModel.swift
+      - path: core/orb/OrbVisualStyle.swift
+      - path: core/orb/CompanionHomeOrbPresentation.swift
+      - path: core/orb/GlowHistoryView.swift
+      - path: core/theme/FloatingDockView.swift
+      - path: core/networking/BackendClient.swift
+      - path: features/gemini/GeminiService.swift
+      - path: features/gemini/GeminiLiveService.swift
+      - path: features/voice/AudioService.swift
+      - path: features/voice/SessionActivity.swift
+      - path: features/checkin/CheckInService.swift
+      - path: features/checkin/CheckInCoordinator.swift
+      - path: features/checkin/CheckInScheduleService.swift
+      - path: features/checkin/IntentRecoveryService.swift
+      - path: features/checkin/GraphSyncService.swift
+      - path: features/checkin/LiveCheckInManager.swift
+      - path: features/checkin/UnifiedGuidanceService.swift
+      - path: features/memory/MemoryService.swift
+      - path: features/memory/MemoryProjectionService.swift
+      - path: features/memory/CompanionSessionProjectionRecorder.swift
+      - path: features/medication/MedicationService.swift
+      - path: features/medication/MedicationReminderHandler.swift
+      - path: features/safety/EmergencyService.swift
+      - path: features/onboarding/OnboardingService.swift
+      - path: features/history/HealthHistoryService.swift
+      - path: features/caregiver/CaregiverService.swift
+      - path: features/caregiver/VoiceMessageInboxService.swift
+      - path: features/report/ReportService.swift
+      - path: features/report/PDFChartRenderer.swift
+      - path: features/report/ReportFlowCoordinator.swift
+      - path: features/checkin/UnifiedSessionCompletionCoordinator.swift
+      - path: features/creative/CreativeBrief.swift
+      - path: features/creative/CreativeCanvasState.swift
+      - path: features/creative/CreativeGenerationProgress.swift
+      - path: features/creative/CreativeArtifactLibraryService.swift
+      - path: features/creative/CreativeResult.swift
+      - path: features/creative/CreativeResultView.swift
+      - path: features/creative/CreativeFlowManager.swift
+      - path: features/creative/GenerationService.swift
+      - path: features/creative/MediaComposer.swift
+      - path: features/creative/LyriaRealtimeService.swift
+      - path: features/creative/StreamingMusicPlayer.swift
+      - path: features/home/CompanionHomeCanvasLayout.swift
+      - path: features/camera/CameraFilterPipeline.swift
+      - path: features/camera/PhoneCameraService.swift
+      - path: core/privacy/ConsentService.swift
+      - path: core/models/HealthEntries.swift
+      - path: Tests/TestDoubles/VoicePipelineTestStub.swift
+      - path: features/caregiver/CaregiverService.swift
+    dependencies:
+      - package: FirebaseSDK
+        product: FirebaseAuth
+      - package: FirebaseSDK
+        product: FirebaseFirestore
+    resources:
+      - path: ../config
+        type: folder
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        GENERATE_INFOPLIST_FILE: true
+        CODE_SIGN_ENTITLEMENTS: Tests/NoongilTests.entitlements
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: YOUR_TEAM_ID

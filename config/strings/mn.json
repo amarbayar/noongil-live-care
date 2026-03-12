@@ -1,0 +1,12 @@
+{
+  "greeting_morning": "Өглөөний мэнд! Өнөөдөр яаж байна?",
+  "greeting_afternoon": "Өдрийн мэнд! Яаж байна?",
+  "greeting_evening": "Оройн мэнд! Яаж байна?",
+  "checkin_start": "Бяцхан шалгалт хийцгээе. Бэлэн бол эхлүүлье.",
+  "checkin_complete": "Баярлалаа. Өөрийгөө сайн хар.",
+  "medication_reminder": "%medication% уух цаг боллоо. Уусан уу?",
+  "medication_confirmed": "Тэмдэглэлээ.",
+  "medication_skipped": "Зүгээр. Тэмдэглэе.",
+  "companion_name": "Мира",
+  "app_name": "Нунгил"
+}

@@ -1,0 +1,15 @@
+{
+  "check_in_enabled": true,
+  "glasses_camera_enabled": true,
+  "caregiver_linking_enabled": false,
+  "doctor_report_enabled": true,
+  "voice_biomarker_enabled": false,
+  "enhancement_mode_default": "SBR",
+  "pipeline_mode_default": "Live",
+  "max_check_in_questions": 5,
+  "correlation_engine_enabled": false,
+  "medication_reminders_enabled": true,
+  "companion_name": "Mira",
+  "creative_generation_enabled": true,
+  "unified_guidance_enabled": true
+}

@@ -1,0 +1,12 @@
+{
+  "greeting_morning": "Good morning! How are you feeling today?",
+  "greeting_afternoon": "Good afternoon! How's your day going?",
+  "greeting_evening": "Good evening! How are you doing?",
+  "checkin_start": "Let's do a quick check-in. Ready when you are.",
+  "checkin_complete": "Thanks for checking in. Take care of yourself.",
+  "medication_reminder": "Time for your %medication%. Did you take it?",
+  "medication_confirmed": "Got it, logged.",
+  "medication_skipped": "No worries. I'll note that.",
+  "companion_name": "Mira",
+  "app_name": "Noongil"
+}

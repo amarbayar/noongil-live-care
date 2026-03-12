@@ -1,0 +1,29 @@
+name: Contracts CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['contracts/**']
+  pull_request:
+    paths: ['contracts/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: contracts/package-lock.json
+      - name: Install
+        run: cd contracts && npm ci
+      - name: Build
+        run: cd contracts && npm run build
+      - name: Test
+        run: cd contracts && npm test
+      - name: Codegen
+        run: |
+          cd contracts && npm run gen
+          git diff --exit-code ../ios/core/contracts/ || (echo "Generated types out of date — run 'make contracts-gen'" && exit 1)

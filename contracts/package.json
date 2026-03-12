@@ -1,0 +1,20 @@
+{
+  "name": "@noongil/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest",
+    "gen:swift": "tsx codegen/swift-gen.ts",
+    "gen:kotlin": "tsx codegen/kotlin-gen.ts",
+    "gen": "npm run gen:swift && npm run gen:kotlin"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "tsx": "^4.19.0",
+    "vitest": "^3.0.0"
+  }
+}

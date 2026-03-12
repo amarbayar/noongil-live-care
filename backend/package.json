@@ -1,0 +1,33 @@
+{
+  "name": "@noongil/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest",
+    "seed": "tsx --env-file=.env tests/spike-realistic-graph.ts",
+    "backfill:graph": "tsx --env-file=.env scripts/backfill-graph-from-firestore.ts",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.0.0",
+    "@fastify/rate-limit": "^10.3.0",
+    "fastify": "^5.2.0",
+    "firebase-admin": "^13.0.0",
+    "google-auth-library": "^9.0.0",
+    "hot-shots": "^10.2.0",
+    "neo4j-driver": "^5.27.0",
+    "simple-statistics": "^7.8.8",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.18.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

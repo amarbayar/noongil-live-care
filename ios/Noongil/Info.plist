@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundleDisplayName</key>
+    <string>Noongil</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundleVersion</key>
+    <string>$(CURRENT_PROJECT_VERSION)</string>
+
+    <!-- URL Scheme for Meta AI callback -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>noongil</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Required for Meta AI app deep linking -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fb-viewapp</string>
+    </array>
+
+    <!-- External accessory protocol for Ray-Ban Meta -->
+    <key>UISupportedExternalAccessoryProtocols</key>
+    <array>
+        <string>com.meta.ar.wearable</string>
+    </array>
+
+    <!-- Background modes -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>bluetooth-peripheral</string>
+        <string>external-accessory</string>
+        <string>audio</string>
+    </array>
+
+    <!-- Bluetooth permission -->
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Noongil needs Bluetooth to connect to your Ray-Ban Meta glasses.</string>
+
+    <!-- Camera permission -->
+    <key>NSCameraUsageDescription</key>
+    <string>Noongil uses the camera when you ask to take a photo or want Mira to see what you see.</string>
+
+    <!-- Microphone permission -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Noongil needs microphone access to capture audio from your glasses for voice commands.</string>
+
+    <!-- Photo library permission (save creations) -->
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Noongil saves your created images and videos to your photo library when you ask.</string>
+
+    <!-- Launch screen (required for full-screen display) -->
+    <key>UILaunchScreen</key>
+    <dict/>
+
+    <!-- Supported orientations -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+    </array>
+
+    <!-- Allow HTTP for local backend development -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+
+    <!-- API keys and URLs from build settings / xcconfig -->
+    <key>GEMINI_API_KEY</key>
+    <string>$(GEMINI_API_KEY)</string>
+    <key>BACKEND_BASE_URL</key>
+    <string>$(BACKEND_BASE_URL)</string>
+    <key>PUBLIC_DASHBOARD_URL</key>
+    <string>$(PUBLIC_DASHBOARD_URL)</string>
+
+    <!-- MWDAT Configuration -->
+    <key>MWDAT</key>
+    <dict>
+        <key>AppLinkURLScheme</key>
+        <string>noongil://</string>
+        <key>metaAppId</key>
+        <string>0</string>
+    </dict>
+</dict>
+</plist>

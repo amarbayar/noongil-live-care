@@ -1,0 +1,41 @@
+# Xcode
+ios/build/
+ios/Noongil.xcodeproj/
+*.xcworkspace
+xcuserdata/
+DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.moved-aside
+
+# SPM
+.build/
+.swiftpm/
+
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.*
+
+# Private iOS runtime assets kept only in local/private builds
+ios/Resources/models/*
+!ios/Resources/models/README.md
+ios/Frameworks/onnxruntime.xcframework/*
+!ios/Frameworks/onnxruntime.xcframework/README.md
+ios/Frameworks/sherpa-onnx.xcframework/*
+!ios/Frameworks/sherpa-onnx.xcframework/README.md
+
+# Terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate*
