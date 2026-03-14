@@ -204,7 +204,7 @@ export async function caregiverRoutes(fastify: FastifyInstance): Promise<void> {
           name: null,
           role: 'caregiver',
         },
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(),
       };
 
       const docRef = await db

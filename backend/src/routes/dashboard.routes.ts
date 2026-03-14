@@ -26,9 +26,24 @@ function parseDashboardQuery(query: unknown) {
 }
 
 export async function dashboardRoutes(fastify: FastifyInstance): Promise<void> {
-  // Serve the dashboard HTML — inject Firebase web config from env vars
-  fastify.get('/dashboard', async (_request, reply) => {
-    let html = await readFile(path.join(publicDir, 'dashboard.html'), 'utf-8');
+  // Serve dashboard static assets (JS/CSS chunks)
+  const dashboardDir = path.join(publicDir, 'dashboard');
+  await fastify.register(import('@fastify/static'), {
+    root: dashboardDir,
+    prefix: '/dashboard/',
+    decorateReply: false,
+    wildcard: false,
+  });
+
+  // Serve the dashboard SPA — inject Firebase web config from env vars
+  const serveDashboardHtml = async (_request: unknown, reply: import('fastify').FastifyReply) => {
+    let html: string;
+    try {
+      html = await readFile(path.join(dashboardDir, 'index.html'), 'utf-8');
+    } catch {
+      // Fallback to legacy dashboard.html if React build not present
+      html = await readFile(path.join(publicDir, 'dashboard.html'), 'utf-8');
+    }
 
     const fbConfig = buildFirebaseWebConfig();
     if (fbConfig) {
@@ -37,7 +52,9 @@ export async function dashboardRoutes(fastify: FastifyInstance): Promise<void> {
     }
 
     return reply.type('text/html').send(html);
-  });
+  };
+
+  fastify.get('/dashboard', serveDashboardHtml);
 
   // List members this caregiver can view (for the member picker)
   fastify.get('/api/dashboard/me', { preHandler: [requireAuth] }, async (request, _reply) => {

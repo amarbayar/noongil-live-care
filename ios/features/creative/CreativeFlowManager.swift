@@ -1121,7 +1121,7 @@ final class CreativeFlowManager {
                     existing.image = nil
                     existing.videoURL = nil
                     existing.composedVideoURL = nil
-                case .animation:
+                case .animation, .voiceMessage:
                     break
                 }
             }
@@ -1343,6 +1343,8 @@ final class CreativeFlowManager {
                 return "Your music is ready and playing on screen."
             case .animation:
                 return "Your animation is ready and showing on screen."
+            case .voiceMessage:
+                return "The voice message is playing on screen."
             }
         }
 
@@ -1355,6 +1357,8 @@ final class CreativeFlowManager {
             return "I'm composing it now. Give me a little while to shape the sound."
         case .animation:
             return "I'm building the animation now. This can take a bit longer."
+        case .voiceMessage:
+            return "Loading the voice message."
         }
     }
 

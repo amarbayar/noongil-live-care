@@ -1,4 +1,4 @@
-.PHONY: setup ios-build ios-test backend-dev backend-test contracts-gen lint config-push infra-plan infra-apply
+.PHONY: setup ios-build ios-test backend-dev backend-test contracts-gen lint config-push infra-plan infra-apply dashboard-dev dashboard-build
 
 setup:
 	@echo "==> Installing dependencies..."
@@ -8,6 +8,7 @@ setup:
 	which terraform || brew install terraform
 	cd contracts && npm install
 	cd backend && npm install
+	cd dashboard && npm install
 
 ios-build:
 	cd ios && ./build.sh
@@ -24,6 +25,12 @@ backend-dev:
 
 backend-test:
 	cd backend && npm test
+
+dashboard-dev:
+	cd dashboard && npm run dev
+
+dashboard-build:
+	cd dashboard && npm run build
 
 contracts-gen:
 	cd contracts && npx tsx codegen/swift-gen.ts

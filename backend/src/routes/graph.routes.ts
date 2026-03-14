@@ -14,6 +14,7 @@ const IngestBody = z.object({
     userId: z.string().min(1),
     type: z.string(),
     completedAt: z.string().datetime(),
+    localDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
     completionStatus: z.string(),
     durationSeconds: z.number().optional(),
     mood: z.object({
@@ -80,7 +81,7 @@ export async function graphRoutes(fastify: FastifyInstance): Promise<void> {
     const ingestResult = await graphService.ingestCheckIn(userId, eventId, checkIn);
 
     if (!ingestResult.duplicate) {
-      const date = checkIn.completedAt.split('T')[0];
+      const date = checkIn.localDate ?? checkIn.completedAt.split('T')[0];
       await graphService.updateDayComposite(userId, date);
 
       // Build causal edges in background — don't block the response

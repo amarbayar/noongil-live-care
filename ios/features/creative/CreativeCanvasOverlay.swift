@@ -24,6 +24,10 @@ struct CreativeCanvasOverlay: View {
         canvasState.status == .ready && canvasState.result?.resolvedMediaType == .music
     }
 
+    private var isReadyVoiceMessage: Bool {
+        canvasState.status == .ready && canvasState.result?.resolvedMediaType == .voiceMessage
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             if !canvasState.isFullscreen {
@@ -31,8 +35,8 @@ struct CreativeCanvasOverlay: View {
                     .padding(.top, 10)
             }
 
-            // Music player has its own title/subtitle — skip redundant header
-            if !isReadyMusic && !canvasState.isFullscreen {
+            // Music/voice message players have their own title — skip redundant header
+            if !isReadyMusic && !isReadyVoiceMessage && !canvasState.isFullscreen {
                 headerSection
                     .padding(.horizontal, 20)
                     .padding(.top, 12)
@@ -42,7 +46,7 @@ struct CreativeCanvasOverlay: View {
                 .padding(.horizontal, canvasState.isFullscreen ? 0 : 20)
                 .padding(.top, canvasState.isFullscreen ? 0 : (isReadyMusic ? 8 : 16))
 
-            if canvasState.status == .ready, canvasState.result != nil, !isReadyMusic, !canvasState.isFullscreen {
+            if canvasState.status == .ready, canvasState.result != nil, !isReadyMusic, !isReadyVoiceMessage, !canvasState.isFullscreen {
                 actionButtons
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
@@ -115,6 +119,8 @@ struct CreativeCanvasOverlay: View {
                 Image(systemName: "music.note")
             case .animation:
                 Image(systemName: "sparkles.rectangle.stack")
+            case .voiceMessage:
+                Image(systemName: "waveform.badge.mic")
             }
         }
     }
@@ -166,7 +172,7 @@ struct CreativeCanvasOverlay: View {
         switch canvasState.mediaType {
         case .image: return 1.0
         case .video, .animation: return 16.0 / 9.0
-        case .music: return 2.5
+        case .music, .voiceMessage: return 2.5
         }
     }
 
@@ -191,6 +197,7 @@ struct CreativeCanvasOverlay: View {
         case .video: return "film"
         case .music: return "waveform"
         case .animation: return "sparkles.rectangle.stack"
+        case .voiceMessage: return "waveform.badge.mic"
         }
     }
 
@@ -223,7 +230,71 @@ struct CreativeCanvasOverlay: View {
 
         case .music:
             musicPlayer(result)
+
+        case .voiceMessage:
+            voiceMessagePlayer(result)
         }
+    }
+
+    // MARK: - Voice Message Player
+
+    private func voiceMessagePlayer(_ result: CreativeResult) -> some View {
+        VStack(spacing: 16) {
+            // Dismiss button row
+            HStack {
+                Spacer()
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.5))
+                }
+                .frame(minWidth: 44, minHeight: 44)
+                .accessibilityLabel("Close")
+            }
+
+            // Header: sender name + badge
+            HStack(spacing: 8) {
+                Image(systemName: "waveform.badge.mic")
+                    .font(.title3)
+                    .foregroundColor(.white.opacity(0.9))
+
+                Text(result.senderName ?? "Caregiver")
+                    .font(.headline)
+                    .foregroundColor(.white)
+
+                if result.isUnread {
+                    Text("New")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.orange)
+                        .cornerRadius(4)
+                }
+
+                Spacer()
+            }
+
+            // Waveform visualizer
+            waveformVisualizer
+                .frame(height: 120)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+
+            // Transcript section
+            if let transcript = result.transcript, !transcript.isEmpty {
+                Text(transcript)
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.8))
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 4)
+            }
+
+            // Progress bar + transport controls
+            musicProgressBar
+            musicTransportControls
+        }
+        .padding(.vertical, 8)
     }
 
     // MARK: - Music Player
@@ -529,7 +600,7 @@ struct CreativeCanvasOverlay: View {
             setupLoopObserverIfNeeded()
         }
 
-        if result.resolvedMediaType == .music || result.shouldPlaySeparateAudioTrack {
+        if result.resolvedMediaType == .music || result.resolvedMediaType == .voiceMessage || result.shouldPlaySeparateAudioTrack {
             startAudioPlayback(result)
         }
     }
@@ -687,7 +758,7 @@ struct CreativeCanvasOverlay: View {
             setupLoopObserverIfNeeded()
         }
         if audioPlayer == nil, let audioData = canvasState.result?.audioData,
-           canvasState.result?.resolvedMediaType == .music {
+           (canvasState.result?.resolvedMediaType == .music || canvasState.result?.resolvedMediaType == .voiceMessage) {
             do {
                 let ap = try AVAudioPlayer(data: audioData)
                 ap.volume = 1.0
@@ -768,9 +839,9 @@ struct CreativeCanvasOverlay: View {
                 UISaveVideoAtPathToSavedPhotosAlbum(videoURL.path, nil, nil, nil)
                 logger.info("saveToPhotos: video saved")
             }
-        case .music:
-            // Music files don't save to Photos — use share sheet instead
-            logger.info("saveToPhotos: music not supported, use share")
+        case .music, .voiceMessage:
+            // Music/voice files don't save to Photos — use share sheet instead
+            logger.info("saveToPhotos: audio not supported, use share")
         }
     }
 }

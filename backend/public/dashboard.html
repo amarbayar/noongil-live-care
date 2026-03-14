@@ -160,12 +160,7 @@
   --glass-blur:   20px;
 }
 
-[data-theme="dark"] body::before {
-  background:
-    radial-gradient(ellipse 80% 60% at 15% 25%, rgba(37, 99, 235, 0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(15, 118, 110, 0.10) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 50% 15%, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
-}
+/* body::before ambient gradient removed — clean admin panel layout */
 
 /* ═══════════════════════════════════════════════════════════════
    Layer 2 — Utility Classes
@@ -253,95 +248,164 @@ body {
   transition: background-color 0.4s, color 0.4s;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 15% 25%, rgba(147, 197, 253, 0.30) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(110, 231, 183, 0.25) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 50% at 50% 15%, rgba(186, 230, 253, 0.20) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
-  transition: background 0.6s;
-}
-
+/* ── n-app shell ── */
 .n-app {
-  position: relative;
-  z-index: var(--z-base);
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--space-6);
+  display: flex;
+  min-height: 100vh;
 }
 
-/* ── n-header ── */
-.n-header {
+/* ── Sidebar ── */
+.n-sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 260px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex; flex-direction: column;
+  padding: 24px 16px 16px;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+.n-sidebar__brand {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 18px var(--space-5);
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  margin-bottom: 18px;
+  gap: 12px;
+  padding: 0 8px 24px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 8px;
 }
 
-.n-header__brand {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-}
+.n-sidebar__logo svg { width: 36px; height: 36px; }
 
-.n-header__logo {
-  font-size: 20px;
-  font-weight: 600;
+.n-sidebar__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
   letter-spacing: -0.02em;
+}
+
+.n-sidebar__spacer { flex: 1; }
+
+.n-sidebar__footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── Sidebar nav (vertical) ── */
+.n-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 0;
+}
+
+.n-nav__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.n-nav__item:hover {
+  background: var(--color-raised);
   color: var(--color-text);
 }
 
-.n-header__subtitle {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--color-text-secondary);
+.n-nav__item.active {
+  background: var(--color-raised);
+  color: var(--color-text);
+  font-weight: 600;
 }
 
-.n-header__actions {
+.n-nav__item.active::before {
+  content: '';
+  width: 3px;
+  height: 20px;
+  background: var(--blue-600);
+  border-radius: 2px;
+  margin-right: -4px;
+  flex-shrink: 0;
+}
+
+/* ── Main content area ── */
+.n-main {
+  margin-left: 260px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  flex: 1;
+}
+
+/* ── Topbar ── */
+.n-topbar {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.n-header__session {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.n-header__session img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
-}
-
-/* ── n-filters ── */
-.n-filters {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  border-radius: var(--radius-xl);
-  padding: var(--space-4);
-  margin-bottom: 18px;
-  box-shadow: var(--shadow-md);
-}
-
-.n-filters--signed-out {
   justify-content: space-between;
+  padding: 16px 32px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
+.n-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.n-topbar__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.n-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.n-sidebar-toggle { display: none; }
+
+/* ── Controls bar (filters) ── */
+.n-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 16px 32px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.n-controls:empty { display: none; }
+
+.n-controls--signed-out {
+  justify-content: center;
+  padding: 48px 32px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Keep n-filters__ child classes for JS-generated content */
 .n-filters__copy {
   display: flex;
   flex-direction: column;
@@ -380,10 +444,14 @@ body::before {
 .n-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  padding: 24px;
+  transition: box-shadow 0.2s ease;
   animation: n-card-in 0.4s var(--ease-out) both;
+}
+
+.n-card:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .n-card:nth-child(1)  { animation-delay: 0.00s; }
@@ -510,54 +578,7 @@ body::before {
   height: 20px;
 }
 
-/* ── n-nav ── */
-.n-nav {
-  display: none;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-  margin-bottom: 18px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-
-.n-nav::-webkit-scrollbar { display: none; }
-
-.n-nav.active {
-  display: flex;
-}
-
-.n-nav__pill {
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  background: var(--glass-bg);
-  color: var(--color-text-secondary);
-  border-radius: var(--radius-full);
-  padding: 10px 14px;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  min-height: 44px;
-  white-space: nowrap;
-  transition: all 0.2s var(--ease-out);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.n-nav__pill:active {
-  transform: scale(0.97);
-}
-
-.n-nav__pill.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(15, 118, 110, 0.14));
-  color: var(--color-text);
-  border-color: rgba(37, 99, 235, 0.28);
-}
-
-[data-theme="dark"] .n-nav__pill.active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(15, 118, 110, 0.22));
-  border-color: rgba(37, 99, 235, 0.36);
-}
+/* ── n-nav: sidebar nav items (see .n-sidebar__nav and .n-nav__item above) ── */
 
 /* ── n-input ── */
 .n-input,
@@ -1268,21 +1289,41 @@ textarea {
   font-weight: 500;
 }
 
-/* ── n-summary ── */
-.n-summary {
-  display: flex;
-  gap: var(--space-6);
-  margin-bottom: var(--space-5);
-  flex-wrap: wrap;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 18px;
-  padding: 18px var(--space-5);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+/* ── n-metrics (summary bar) ── */
+.n-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  padding: 24px 32px 0;
 }
 
+.n-metric {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.n-metric__value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.n-metric__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Legacy aliases so JS-generated .n-summary__* content remains readable */
 .n-summary__stat {
   display: flex;
   flex-direction: column;
@@ -1292,7 +1333,7 @@ textarea {
 .n-summary__value {
   font-family: 'DM Sans', sans-serif;
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -1586,6 +1627,9 @@ textarea {
   border-radius: 50%;
   border: 1px solid var(--color-border);
 }
+.n-user-bar__info { flex: 1; min-width: 0; }
+.n-user-bar__name { font-weight: 500; color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.n-btn--sm { padding: 6px 12px; font-size: 12px; }
 
 .n-sign-out-btn {
   background: none;
@@ -1606,16 +1650,22 @@ textarea {
   color: var(--color-text);
 }
 
+/* ── Content area ── */
+.n-content {
+  padding: 24px 32px 32px;
+  flex: 1;
+}
+
 /* ── Page containers ── */
 .n-page {
   display: none;
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(8px);
 }
 
 .n-page.active {
   display: block;
-  animation: n-fade-in 0.4s var(--ease-out) both;
+  animation: n-fade-in 0.3s ease both;
 }
 
 /* ── No data ── */
@@ -1660,29 +1710,46 @@ textarea {
 /* ═══════════════════════════════════════════════════════════════
    Responsive — Mobile First
    ═══════════════════════════════════════════════════════════════ */
-@media (max-width: 639px) {
-  .n-app {
-    padding: var(--space-4);
+
+/* n-grid single-col on small screens */
+@media (max-width: 639px) { .n-grid { grid-template-columns: 1fr; } }
+
+@media (max-width: 768px) {
+  .n-sidebar {
+    transform: translateX(-100%);
   }
 
-  .n-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-3);
+  .n-sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
   }
 
-  .n-header__actions {
-    flex-direction: column;
-    gap: 10px;
+  .n-main {
+    margin-left: 0;
   }
 
-  .n-header__session {
-    justify-content: center;
+  .n-sidebar-toggle {
+    display: flex;
   }
 
-  .n-filters {
-    flex-direction: column;
-    align-items: stretch;
+  .n-content {
+    padding: 16px;
+  }
+
+  .n-topbar {
+    padding: 12px 16px;
+  }
+
+  .n-controls {
+    padding: 12px 16px;
+  }
+
+  .n-metrics {
+    padding: 16px;
+  }
+
+  .n-grid {
+    grid-template-columns: 1fr;
   }
 
   .n-filters__field {
@@ -1690,18 +1757,8 @@ textarea {
   }
 
   .n-filters__field input,
-  .n-filters select {
+  .n-controls select {
     width: 100%;
-  }
-
-  .n-nav {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: var(--space-1);
-  }
-
-  .n-summary {
-    justify-content: center;
   }
 
   .n-graph-shell {
@@ -1755,11 +1812,7 @@ textarea {
   }
 }
 
-@media (min-width: 640px) and (max-width: 1023px) {
-}
-
 @media (min-width: 1024px) {
-
   .n-graph-shell {
     grid-template-columns: minmax(0, 1.75fr) minmax(320px, 0.95fr);
   }
@@ -1780,7 +1833,7 @@ textarea {
   .n-btn--secondary:hover,
   .n-btn--danger:hover,
   .n-btn--icon:hover,
-  .n-nav__pill:hover,
+  .n-nav__item:hover,
   .n-graph-focus-chip:hover,
   .n-sign-in-btn:hover,
   .n-sign-out-btn:hover {
@@ -1796,53 +1849,61 @@ textarea {
 <body>
 
 <div class="n-app">
-  <header class="n-header glass">
-    <div class="n-header__brand">
-      <div class="n-header__logo" data-i18n="app_title">Noongil</div>
-      <span class="n-header__subtitle" data-i18n="app_subtitle">Wellness Insights</span>
+  <!-- Sidebar -->
+  <aside class="n-sidebar" id="sidebar">
+    <div class="n-sidebar__brand">
+      <div class="n-sidebar__logo">
+        <svg width="32" height="32" viewBox="0 0 64 64"><defs><radialGradient id="lg" cx="50%" cy="45%" r="55%"><stop offset="0%" stop-color="#dbeafe"/><stop offset="55%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#0f766e"/></radialGradient></defs><rect width="64" height="64" rx="18" fill="var(--color-surface)"/><circle cx="32" cy="32" r="20" fill="url(#lg)"/></svg>
+      </div>
+      <span class="n-sidebar__name" data-i18n="app_title">Noongil</span>
     </div>
-    <div class="n-header__actions">
-      <div id="sessionBar" class="n-header__session"></div>
-      <button class="n-btn n-btn--icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-      <select class="n-input n-lang-select" id="langSelect">
-        <option value="en">EN</option>
-        <option value="mn">MN</option>
-      </select>
+    <nav class="n-sidebar__nav" id="pageNav"></nav>
+    <div class="n-sidebar__spacer"></div>
+    <div class="n-sidebar__footer" id="sessionBar"></div>
+  </aside>
+
+  <!-- Main -->
+  <main class="n-main">
+    <header class="n-topbar">
+      <div class="n-topbar__left">
+        <button class="n-btn n-btn--icon n-sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h1 class="n-topbar__title" id="topbarTitle" data-i18n="caregiver_dashboard">Caregiver Dashboard</h1>
+      </div>
+      <div class="n-topbar__actions">
+        <button class="n-btn n-btn--icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <select class="n-input n-lang-select" id="langSelect">
+          <option value="en">EN</option>
+          <option value="mn">MN</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="n-controls" id="controlsBar"></section>
+    <div id="inviteBanner" style="display:none"></div>
+    <div id="summaryBar" class="n-metrics" style="display:none"></div>
+
+    <div class="n-content">
+      <div id="page-checkins" class="n-page"></div>
+      <div id="page-causal" class="n-page"></div>
+      <div id="page-care-plan" class="n-page"></div>
+      <div id="page-messages" class="n-page"></div>
+      <div id="emptyState" class="n-empty"></div>
     </div>
-  </header>
-
-  <section class="n-filters glass" id="controlsBar"></section>
-
-  <div id="inviteBanner" style="display:none"></div>
-
-  <div id="summaryBar" class="n-summary" style="display:none"></div>
-
-  <nav class="n-nav" id="pageNav"></nav>
-
-  <div id="page-checkins" class="n-page"></div>
-  <div id="page-causal" class="n-page"></div>
-  <div id="page-care-plan" class="n-page"></div>
-  <div id="page-messages" class="n-page"></div>
-
-  <div id="emptyState" class="n-empty"></div>
+  </main>
 </div>
 
 <div class="n-overlay" id="loadingOverlay">
-  <div class="n-loader">
-    <div class="n-loader__orb"></div>
-  </div>
+  <div class="n-loader"><div class="n-loader__orb"></div></div>
   <div class="n-loader__copy">
     <div class="n-loader__title" id="loadingTitle" data-i18n="loading_title">Preparing dashboard</div>
     <div class="n-loader__subtitle" id="loadingSubtitle" data-i18n="loading_subtitle">Checking your session</div>
@@ -2089,9 +2150,10 @@ function setLoadingState(active, title, subtitle) {
 // ── Auth UI ──
 function renderSignedOutControls() {
   document.getElementById('sessionBar').innerHTML = '';
+  document.getElementById('pageNav').innerHTML = '';
   const bar = document.getElementById('controlsBar');
   bar.innerHTML = '';
-  bar.className = 'n-filters glass n-filters--signed-out';
+  bar.className = 'n-controls n-controls--signed-out';
   bar.innerHTML = `
     <div class="n-filters__copy">
       <div class="n-filters__title">${escapeHtml(I18n.t('sign_in_title'))}</div>
@@ -2110,22 +2172,25 @@ function renderSignedInControls() {
   const bar = document.getElementById('controlsBar');
   sessionBar.innerHTML = '';
   bar.innerHTML = '';
-  bar.className = 'n-filters glass';
+  bar.className = 'n-controls';
 
+  // User info in sidebar footer
   const userBar = document.createElement('div');
   userBar.className = 'n-user-bar';
   if (currentUser.photoURL) { const img = document.createElement('img'); img.src = currentUser.photoURL; img.alt = ''; img.referrerPolicy = 'no-referrer'; userBar.appendChild(img); }
-  userBar.appendChild(document.createTextNode(currentUser.displayName || currentUser.email || ''));
+  const userInfo = document.createElement('div');
+  userInfo.className = 'n-user-bar__info';
+  userInfo.innerHTML = `<div class="n-user-bar__name">${escapeHtml(currentUser.displayName || currentUser.email || '')}</div>`;
+  userBar.appendChild(userInfo);
   sessionBar.appendChild(userBar);
 
   const signOutBtn = document.createElement('button');
-  signOutBtn.className = 'n-btn n-btn--secondary';
+  signOutBtn.className = 'n-btn n-btn--secondary n-btn--sm';
   signOutBtn.textContent = I18n.t('sign_out');
   signOutBtn.onclick = () => signOut(auth);
   sessionBar.appendChild(signOutBtn);
 
-  bar.innerHTML = `<div class="n-filters__copy"><div class="n-filters__title">${escapeHtml(I18n.t('caregiver_dashboard'))}</div><div class="n-filters__subtitle">${escapeHtml(I18n.t('dashboard_desc'))}</div></div>`;
-
+  // Controls bar: member select + date range + refresh
   const select = document.createElement('select');
   select.id = 'memberSelect'; select.className = 'n-input';
   select.innerHTML = `<option value="">${escapeHtml(I18n.t('member_loading'))}</option>`;
@@ -2358,17 +2423,27 @@ function renderActivePage() {
   requestAnimationFrame(() => { document.querySelectorAll('[data-sparkline]').forEach(drawSparkline); });
 }
 
+const NAV_ICONS = {
+  checkins: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+  causal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>',
+  'care-plan': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  messages: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>',
+};
 function renderPageNav() {
   const nav = document.getElementById('pageNav');
   nav.innerHTML = '';
-  nav.className = 'n-nav active';
+  nav.className = 'n-sidebar__nav';
   const labels = { checkins: 'nav_checkins', causal: 'nav_causal', 'care-plan': 'nav_care_plan', messages: 'nav_messages' };
   PAGES.forEach(p => {
     const btn = document.createElement('button');
-    btn.className = `n-nav__pill${p === activeDashboardPage ? ' active' : ''}`;
+    btn.className = `n-nav__item${p === activeDashboardPage ? ' active' : ''}`;
     btn.dataset.page = p;
-    btn.textContent = I18n.t(labels[p]);
-    btn.onclick = () => { routerGo(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    btn.innerHTML = `${NAV_ICONS[p] || ''}<span>${escapeHtml(I18n.t(labels[p]))}</span>`;
+    btn.onclick = () => {
+      routerGo(p);
+      // Close sidebar on mobile
+      document.getElementById('sidebar')?.classList.remove('open');
+    };
     nav.appendChild(btn);
   });
 }
@@ -2383,12 +2458,12 @@ function renderSummaryBar(data) {
   const avgAdherence = average(ts.medAdherenceSeries);
   const loggedDays = days - (ts.missingDates?.length || 0);
   summaryBar.innerHTML = `
-    <div class="n-summary__stat"><div class="n-summary__value">${days}</div><div class="n-summary__label">${escapeHtml(I18n.t('days_in_range'))}</div></div>
-    <div class="n-summary__stat"><div class="n-summary__value">${loggedDays}</div><div class="n-summary__label">${escapeHtml(I18n.t('checkins_logged'))}</div></div>
-    ${avgMood !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.mood.text}">${avgMood.toFixed(1)}</div><div class="n-summary__label">${escapeHtml(I18n.t('avg_mood'))}</div></div>` : ''}
-    ${avgSleep !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.sleep.text}">${avgSleep.toFixed(1)}h</div><div class="n-summary__label">${escapeHtml(I18n.t('avg_sleep'))}</div></div>` : ''}
-    ${avgAdherence !== null ? `<div class="n-summary__stat"><div class="n-summary__value" style="color:${COLORS.med.text}">${Math.round(avgAdherence * 100)}%</div><div class="n-summary__label">${escapeHtml(I18n.t('med_adherence'))}</div></div>` : ''}`;
-  summaryBar.style.display = 'flex';
+    <div class="n-metric"><div class="n-metric__label">${escapeHtml(I18n.t('days_in_range'))}</div><div class="n-metric__value">${days}</div></div>
+    <div class="n-metric"><div class="n-metric__label">${escapeHtml(I18n.t('checkins_logged'))}</div><div class="n-metric__value">${loggedDays}</div></div>
+    ${avgMood !== null ? `<div class="n-metric"><div class="n-metric__label">${escapeHtml(I18n.t('avg_mood'))}</div><div class="n-metric__value" style="color:${COLORS.mood.text}">${avgMood.toFixed(1)}</div></div>` : ''}
+    ${avgSleep !== null ? `<div class="n-metric"><div class="n-metric__label">${escapeHtml(I18n.t('avg_sleep'))}</div><div class="n-metric__value" style="color:${COLORS.sleep.text}">${avgSleep.toFixed(1)}h</div></div>` : ''}
+    ${avgAdherence !== null ? `<div class="n-metric"><div class="n-metric__label">${escapeHtml(I18n.t('med_adherence'))}</div><div class="n-metric__value" style="color:${COLORS.med.text}">${Math.round(avgAdherence * 100)}%</div></div>` : ''}`;
+  summaryBar.style.display = 'grid';
 }
 
 function renderCurrentDashboard() { if (currentDashboardData) renderActivePage(); }
@@ -2563,7 +2638,7 @@ function mountGraphExperience({ graphData, focusStrip, stage, canvas, panel }) {
       elements: traceModel.elements,
       layout: traceModel.layout,
       style: graphStyles(),
-      minZoom: 0.4, maxZoom: 2.5, wheelSensitivity: 0.3,
+      minZoom: 0.4, maxZoom: 2.5,
     });
     cy.on('tap', 'node', (event) => {
       const nextKey = event.target.data('focusKey');
@@ -2697,7 +2772,7 @@ function graphStyles() {
   const nodeText = isDark ? '#E2E8F0' : '#0F172A';
   const edgeColor = isDark ? 'rgba(148,163,184,0.3)' : '#CBD5E1';
   return [
-    { selector: 'node', style: { 'background-color': nodeBg, label: 'data(label)', 'font-family': 'DM Sans', 'font-size': 12, 'font-weight': 500, 'text-wrap': 'wrap', 'text-max-width': 100, 'text-valign': 'center', 'text-halign': 'center', color: nodeText, 'border-width': 3, 'border-color': isDark ? 'rgba(148,163,184,0.2)' : '#FFFFFF', width: 60, height: 60, 'shadow-blur': 12, 'shadow-color': 'rgba(0,0,0,0.08)', 'shadow-offset-x': 0, 'shadow-offset-y': 2, 'overlay-padding': 8, 'overlay-opacity': 0, 'transition-property': 'opacity', 'transition-duration': '0.3s' } },
+    { selector: 'node', style: { 'background-color': nodeBg, label: 'data(label)', 'font-family': 'DM Sans', 'font-size': 12, 'font-weight': 500, 'text-wrap': 'wrap', 'text-max-width': 100, 'text-valign': 'center', 'text-halign': 'center', color: nodeText, 'border-width': 3, 'border-color': isDark ? 'rgba(148,163,184,0.2)' : '#FFFFFF', width: 60, height: 60, 'overlay-padding': 8, 'overlay-opacity': 0, 'transition-property': 'opacity', 'transition-duration': '0.3s' } },
     { selector: 'node[type="Day"]', style: { shape: 'round-rectangle', 'background-color': isDark ? '#1C2236' : '#E2E8F0', 'border-color': isDark ? 'rgba(148,163,184,0.2)' : '#CBD5E1', width: 120, height: 42, 'font-size': 12 } },
     { selector: 'node[type="MoodEntry"]', style: { 'background-color': isDark ? 'rgba(37,99,235,0.25)' : '#DBEAFE', color: isDark ? '#93C5FD' : '#2563EB' } },
     { selector: 'node[type="SleepEntry"]', style: { 'background-color': isDark ? 'rgba(124,58,237,0.25)' : '#EDE9FE', color: isDark ? '#C4B5FD' : '#7C3AED' } },
@@ -2705,11 +2780,11 @@ function graphStyles() {
     { selector: 'node[type="MedicationDose"]', style: { 'background-color': isDark ? 'rgba(15,118,110,0.25)' : '#D1FAE5', color: isDark ? '#5EEAD4' : '#0F766E' } },
     { selector: 'node[type="Trigger"]', style: { 'background-color': isDark ? 'rgba(217,119,6,0.25)' : '#FFEDD5', color: isDark ? '#FCD34D' : '#D97706' } },
     { selector: 'node[type="Activity"]', style: { 'background-color': isDark ? 'rgba(20,184,166,0.25)' : '#CCFBF1', color: isDark ? '#5EEAD4' : '#14B8A6' } },
-    { selector: 'node:selected', style: { 'border-color': isDark ? '#60A5FA' : '#2563EB', 'border-width': 4, 'shadow-blur': 16, 'shadow-color': isDark ? 'rgba(96,165,250,0.3)' : 'rgba(37,99,235,0.2)' } },
+    { selector: 'node:selected', style: { 'border-color': isDark ? '#60A5FA' : '#2563EB', 'border-width': 4, 'overlay-color': isDark ? '#60A5FA' : '#2563EB', 'overlay-padding': 6, 'overlay-opacity': 0.15 } },
     { selector: 'edge', style: { 'curve-style': 'taxi', 'taxi-direction': 'downward', 'taxi-turn': '20px', width: 1.5, 'line-color': edgeColor, 'target-arrow-color': edgeColor, 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, label: '', 'font-family': 'DM Sans', 'font-size': 9, 'text-background-color': isDark ? '#141927' : '#FFFFFF', 'text-background-opacity': 0.85, 'text-background-padding': 2, color: isDark ? '#94A3B8' : '#475569', 'transition-property': 'opacity', 'transition-duration': '0.3s' } },
     { selector: 'edge[type="ON_DAY"]', style: { 'line-color': edgeColor, 'target-arrow-shape': 'none', 'curve-style': 'taxi', label: 'data(label)' } },
     { selector: 'edge[type="TRIGGERED_ON"]', style: { 'line-color': isDark ? 'rgba(251,191,36,0.5)' : '#FDBA74', 'target-arrow-color': isDark ? 'rgba(251,191,36,0.5)' : '#FDBA74', 'line-style': 'dashed', label: 'data(label)' } },
-    { selector: 'edge[type="NEXT_DAY"]', style: { 'line-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'target-arrow-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'curve-style': 'straight', width: 1.5, 'line-style': 'dotted' } },
+    { selector: 'edge[type="NEXT_DAY"]', style: { 'line-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'target-arrow-color': isDark ? 'rgba(148,163,184,0.2)' : '#94A3B8', 'curve-style': 'bezier', width: 1.5, 'line-style': 'dotted' } },
     { selector: 'edge[type="LIKELY_CAUSED_BY"]', style: { 'line-color': isDark ? 'rgba(96,165,250,0.6)' : '#2563EB', 'target-arrow-color': isDark ? 'rgba(96,165,250,0.6)' : '#2563EB', width: 'mapData(confidence, 0, 1, 2, 6)', label: 'data(label)' } },
     { selector: 'edge[type="WORSENED_BY"]', style: { 'line-color': isDark ? 'rgba(248,113,113,0.6)' : '#EA580C', 'target-arrow-color': isDark ? 'rgba(248,113,113,0.6)' : '#EA580C', width: 'mapData(confidence, 0, 1, 2, 6)', 'line-style': 'dashed', label: 'data(label)' } },
   ];
@@ -3096,6 +3171,7 @@ routerInit();
 
 document.getElementById('themeToggle').addEventListener('click', () => Theme.toggle());
 document.getElementById('langSelect').addEventListener('change', e => { I18n.setLang(e.target.value); renderCurrentDashboard(); });
+document.getElementById('sidebarToggle')?.addEventListener('click', () => { document.getElementById('sidebar')?.classList.toggle('open'); });
 
 onAuthStateChanged(auth, async (user) => {
   authResolved = true; currentUser = user;

@@ -73,6 +73,12 @@ final class VoicePipeline: ObservableObject {
     /// When set, speech is checked for report trigger keywords and routed through the report flow.
     var reportFlowCoordinator: ReportFlowCoordinator?
 
+    /// Reference to voice message inbox service for tool call handling.
+    var voiceMessageInboxService: VoiceMessageInboxService?
+
+    /// Context string injected when the session starts from a voice message notification.
+    var pendingVoiceMessageContext: String?
+
     /// Active Live check-in manager (only during Live mode check-ins).
     private var liveCheckInManager: LiveCheckInManager?
 
@@ -93,6 +99,32 @@ final class VoicePipeline: ObservableObject {
     /// Whether the unified guidance flow is active (vs legacy mode-switching).
     private var unifiedGuidanceActive = false
     private var unifiedSessionCompletionTask: Task<Void, Never>?
+
+    /// Tool declarations for voice message playback/dismissal.
+    static let voiceMessageToolDeclarations: [[String: Any]] = [
+        [
+            "name": "play_voice_message",
+            "description": "Play a caregiver's voice message through the canvas. Call when user agrees to listen.",
+            "parameters": [
+                "type": "OBJECT",
+                "properties": [
+                    "messageId": ["type": "STRING", "description": "ID of the voice message"]
+                ],
+                "required": ["messageId"]
+            ]
+        ],
+        [
+            "name": "dismiss_voice_message",
+            "description": "Mark a voice message as listened/dismissed so the user won't be reminded again. Call when user declines to listen or asks to skip/delete.",
+            "parameters": [
+                "type": "OBJECT",
+                "properties": [
+                    "messageId": ["type": "STRING", "description": "ID of the voice message"]
+                ],
+                "required": ["messageId"]
+            ]
+        ]
+    ]
 
     /// Extra tool declarations to merge into Gemini Live default tools.
     var defaultExtraTools: [[String: Any]] = []
@@ -392,8 +424,14 @@ final class VoicePipeline: ObservableObject {
                     // Proactive greeting: send a text trigger so Gemini greets first
                     if self?.proactiveGreeting == true {
                         self?.proactiveGreeting = false
-                        self?.geminiLiveService.sendText("[check-in session started]")
-                        print("[VoicePipeline] Sent proactive greeting trigger")
+                        if let vmContext = self?.pendingVoiceMessageContext {
+                            self?.geminiLiveService.sendText(vmContext)
+                            self?.pendingVoiceMessageContext = nil
+                            print("[VoicePipeline] Sent voice message proactive greeting")
+                        } else {
+                            self?.geminiLiveService.sendText("[check-in session started]")
+                            print("[VoicePipeline] Sent proactive greeting trigger")
+                        }
                     }
                 case .error(let msg):
                     print("[VoicePipeline] Live error: \(msg)")
@@ -797,6 +835,35 @@ final class VoicePipeline: ObservableObject {
                     let artifactId = argsDict["artifactId"] as? String ?? ""
                     let result = manager.displayArtifact(by: artifactId)
                     self.geminiLiveService.sendToolResponse(id: id, response: result)
+                } else if name == "play_voice_message" {
+                    let messageId = (args as? [String: Any])?["messageId"] as? String ?? ""
+                    if let service = self.voiceMessageInboxService,
+                       let message = service.messages.first(where: { $0.id == messageId }) {
+                        self.playVoiceMessage(message)
+                        Task { await service.markAsListened(message) }
+                        self.geminiLiveService.sendToolResponse(id: id, response: [
+                            "success": true, "status": "playing",
+                            "instruction": "The voice message is now playing on screen. Wait for it to finish, then ask how they feel about it."
+                        ])
+                    } else {
+                        self.geminiLiveService.sendToolResponse(id: id, response: [
+                            "success": false, "error": "Message not found"
+                        ])
+                    }
+                } else if name == "dismiss_voice_message" {
+                    let messageId = (args as? [String: Any])?["messageId"] as? String ?? ""
+                    if let service = self.voiceMessageInboxService,
+                       let message = service.messages.first(where: { $0.id == messageId }) {
+                        Task { await service.markAsListened(message) }
+                        self.geminiLiveService.sendToolResponse(id: id, response: [
+                            "success": true, "status": "dismissed",
+                            "instruction": "The message has been dismissed. Move on naturally."
+                        ])
+                    } else {
+                        self.geminiLiveService.sendToolResponse(id: id, response: [
+                            "success": false, "error": "Message not found"
+                        ])
+                    }
                 } else if name == "google_search" {
                     // Gemini Live may send google_search as a function call instead of handling server-side
                     print("[VoicePipeline] google_search tool call received — Live API bug, responding gracefully")
@@ -1199,7 +1266,21 @@ final class VoicePipeline: ObservableObject {
 
         // Build unified system prompt with memory context
         let memoryContext = memory.buildContextString()
-        let sessionContext = PromptService.buildSessionContext()
+        var sessionContext = PromptService.buildSessionContext()
+
+        // Append unread voice messages to session context
+        if let vmService = voiceMessageInboxService {
+            let unread = vmService.messages.filter { $0.isUnread }
+            if !unread.isEmpty {
+                let vmSummary = unread.map { msg in
+                    let sender = msg.caregiverName ?? "Caregiver"
+                    let dur = Int(msg.durationSeconds)
+                    return "- From \"\(sender)\", \(dur)s, ID: \(msg.id ?? "unknown")"
+                }.joined(separator: "\n")
+                sessionContext += "\n\n[Unread voice messages (\(unread.count)):\n\(vmSummary)\nMention these naturally. Ask if they want to listen. Use play_voice_message tool when they say yes.]"
+            }
+        }
+
         let systemPrompt = PromptService.renderUnifiedSystemPrompt(
             companionName: companionName,
             memoryContext: memoryContext,
@@ -1416,7 +1497,32 @@ final class VoicePipeline: ObservableObject {
         )
     }
 
+    func playVoiceMessage(_ message: VoiceMessage) {
+        guard let audioData = Data(base64Encoded: message.audioBase64) else { return }
+        var result = CreativeResult(mediaType: .voiceMessage, audioData: audioData, prompt: "")
+        result.senderName = message.caregiverName
+        result.transcript = message.transcript
+        result.messageId = message.id
+        result.isUnread = message.isUnread
+
+        creativeCanvas = CreativeCanvasState(
+            artifactId: message.id ?? UUID().uuidString,
+            mediaType: .voiceMessage,
+            prompt: message.caregiverName ?? "Caregiver",
+            status: .ready,
+            statusMessage: "",
+            result: result,
+            isVisible: true
+        )
+        creativeResult = result
+    }
+
     func dismissCreativeCanvas() {
+        if creativeCanvas?.mediaType == .voiceMessage {
+            creativeCanvas = nil
+            creativeResult = nil
+            return
+        }
         creativeFlowManager?.closeCanvas()
         creativeCanvas = creativeFlowManager?.canvasState
         creativeResult = creativeCanvas?.result

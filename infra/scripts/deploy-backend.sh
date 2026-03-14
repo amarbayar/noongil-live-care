@@ -52,6 +52,16 @@ if ! gcloud artifacts repositories describe "$REPOSITORY" \
     --description "Noongil backend images"
 fi
 
+DASHBOARD_DIR="$ROOT_DIR/dashboard"
+
+echo "==> Building dashboard..."
+if [ -d "$DASHBOARD_DIR" ] && [ -f "$DASHBOARD_DIR/package.json" ]; then
+  (cd "$DASHBOARD_DIR" && npm ci && npm run build)
+  echo "==> Dashboard built to $BACKEND_DIR/public/dashboard/"
+else
+  echo "WARN: Dashboard directory not found, skipping dashboard build"
+fi
+
 echo "==> Building container with Cloud Build..."
 gcloud builds submit "$BACKEND_DIR" \
   --project "$PROJECT_ID" \
@@ -65,7 +75,13 @@ ENV_VARS=(
 
 OPTIONAL_ENV_KEYS=(
   FIREBASE_PROJECT_ID
+  FIREBASE_WEB_API_KEY
+  FIREBASE_WEB_APP_ID
+  FIREBASE_MESSAGING_SENDER_ID
+  FIREBASE_MEASUREMENT_ID
+  FIREBASE_STORAGE_BUCKET
   PUBLIC_DASHBOARD_URL
+  BACKEND_BASE_URL
   NEO4J_URI
   NEO4J_USER
   NEO4J_PASSWORD

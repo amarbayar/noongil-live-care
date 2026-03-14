@@ -19,6 +19,7 @@ DerivedData/
 node_modules/
 dist/
 *.tsbuildinfo
+backend/public/dashboard/
 
 # OS
 .DS_Store
@@ -36,6 +37,10 @@ ios/Frameworks/onnxruntime.xcframework/*
 ios/Frameworks/sherpa-onnx.xcframework/*
 !ios/Frameworks/sherpa-onnx.xcframework/README.md
 
+# Deploy scripts with credentials
+infra/scripts/deploy-backend-live.sh
+
 # Terraform
 infra/terraform/.terraform/
 infra/terraform/*.tfstate*
+.env.local

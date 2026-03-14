@@ -19,6 +19,18 @@ struct CreativeResult: Equatable {
     var prompt: String {
         didSet { touchRevision() }
     }
+    var senderName: String? {
+        didSet { touchRevision() }
+    }
+    var transcript: String? {
+        didSet { touchRevision() }
+    }
+    var messageId: String? {
+        didSet { touchRevision() }
+    }
+    var isUnread: Bool = false {
+        didSet { touchRevision() }
+    }
     private(set) var revision = UUID()
 
     init(
@@ -38,6 +50,7 @@ struct CreativeResult: Equatable {
     }
 
     var resolvedMediaType: CreativeMediaType {
+        if mediaType == .voiceMessage { return .voiceMessage }
         if playbackVideoURL != nil {
             return mediaType == .animation ? .animation : .video
         }

@@ -1,5 +1,4 @@
 import SwiftUI
-import AVFoundation
 
 /// Unified reminders screen: check-ins, medications, and custom reminders
 /// grouped by time of day (Morning / Afternoon / Evening).
@@ -23,14 +22,9 @@ struct RemindersView: View {
                     VStack(spacing: 20) {
                         let items = buildUnifiedList()
 
-                        if voiceMessageInboxService.messages.isEmpty && items.isEmpty {
+                        if items.isEmpty {
                             emptyState
                         } else {
-                            if !voiceMessageInboxService.messages.isEmpty {
-                                VoiceMessagesCard(messages: voiceMessageInboxService.messages)
-                                    .environmentObject(voiceMessageInboxService)
-                                    .environmentObject(theme)
-                            }
                             ForEach(TimeWindow.allCases) { window in
                                 let windowItems = items.filter { $0.window == window }
                                 if !windowItems.isEmpty {
@@ -90,15 +84,15 @@ struct RemindersView: View {
 
     private var emptyState: some View {
         VStack(spacing: 16) {
-            Image(systemName: "bubble.left.and.waveform.right")
+            Image(systemName: "bell")
                 .font(.system(size: 48))
                 .foregroundColor(.white.opacity(0.6))
 
-            Text("No reminders or voice messages yet")
+            Text("No reminders yet")
                 .font(.headline)
                 .foregroundColor(.white)
 
-            Text("Tap + to add a medication, check-in, or custom reminder. Caregiver voice messages will also appear here.")
+            Text("Tap + to add a medication, check-in, or custom reminder.")
                 .font(.subheadline)
                 .foregroundColor(.white.opacity(0.6))
                 .multilineTextAlignment(.center)
@@ -490,117 +484,3 @@ private struct CustomReminderRow: View {
     }
 }
 
-private struct VoiceMessagesCard: View {
-    let messages: [VoiceMessage]
-
-    @EnvironmentObject var voiceMessageInboxService: VoiceMessageInboxService
-    @EnvironmentObject var theme: ThemeService
-
-    @State private var audioPlayer: AVAudioPlayer?
-    @State private var playingMessageId: String?
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Label("Voice Messages", systemImage: "waveform.badge.mic")
-                .font(.headline)
-                .foregroundColor(.white)
-
-            ForEach(messages.prefix(5)) { message in
-                voiceMessageRow(message)
-                if message.id != messages.prefix(5).last?.id {
-                    Divider()
-                }
-            }
-        }
-        .glassCard()
-        .onDisappear {
-            audioPlayer?.stop()
-            audioPlayer = nil
-            playingMessageId = nil
-        }
-    }
-
-    @ViewBuilder
-    private func voiceMessageRow(_ message: VoiceMessage) -> some View {
-        HStack(spacing: 12) {
-            Button {
-                Task {
-                    await play(message)
-                }
-            } label: {
-                Image(systemName: playingMessageId == message.id ? "stop.fill" : "play.fill")
-                    .font(.title3)
-                    .foregroundColor(theme.primary)
-                    .frame(width: 36, height: 36)
-                    .background(theme.primary.opacity(0.12))
-                    .clipShape(Circle())
-            }
-            .buttonStyle(.plain)
-
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(spacing: 6) {
-                    Text(message.caregiverName ?? "Caregiver")
-                        .font(.body.weight(.medium))
-                        .foregroundColor(theme.text)
-                    if message.isUnread {
-                        Text("New")
-                            .font(.caption2.weight(.medium))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(theme.accent)
-                            .cornerRadius(4)
-                    }
-                }
-
-                Text(message.transcript?.isEmpty == false ? message.transcript! : "Tap play to listen.")
-                    .font(.caption)
-                    .foregroundColor(theme.textSecondary)
-                    .lineLimit(2)
-
-                Text("\(formatDuration(message.durationSeconds)) · \(formatDate(message.createdAt))")
-                    .font(.caption2)
-                    .foregroundColor(theme.textSecondary.opacity(0.8))
-            }
-
-            Spacer()
-        }
-        .padding(.vertical, 6)
-    }
-
-    private func play(_ message: VoiceMessage) async {
-        guard let id = message.id else { return }
-
-        if playingMessageId == id {
-            audioPlayer?.stop()
-            audioPlayer = nil
-            playingMessageId = nil
-            return
-        }
-
-        guard let data = Data(base64Encoded: message.audioBase64) else { return }
-
-        do {
-            let player = try AVAudioPlayer(data: data)
-            player.prepareToPlay()
-            player.play()
-            audioPlayer = player
-            playingMessageId = id
-            if message.isUnread {
-                await voiceMessageInboxService.markAsListened(message)
-            }
-        } catch {
-            print("[VoiceMessagesCard] Failed to play voice message: \(error)")
-        }
-    }
-
-    private func formatDuration(_ value: Double) -> String {
-        let rounded = max(1, Int(value.rounded()))
-        return "\(rounded)s"
-    }
-
-    private func formatDate(_ iso: String) -> String {
-        guard let date = ISO8601DateFormatter().date(from: iso) else { return "Just now" }
-        return date.formatted(date: .abbreviated, time: .shortened)
-    }
-}

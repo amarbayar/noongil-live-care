@@ -72,6 +72,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     /// Holds a reference to the check-in schedule service for notification routing.
     static var checkInScheduleService: CheckInScheduleService?
 
+    /// Holds a reference to the voice message inbox service for notification routing.
+    static var voiceMessageInboxService: VoiceMessageInboxService?
+
 
     func application(
         _ application: UIApplication,
@@ -97,6 +100,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
                 // Check-in notification — set both: service (if wired) and buffer (if not)
                 CheckInScheduleService.pendingCheckInFromNotification = true
                 AppDelegate.checkInScheduleService?.pendingCheckIn = true
+            } else if type == "voice_message" {
+                VoiceMessageInboxService.pendingVoiceMessageFromNotification = true
+                AppDelegate.voiceMessageInboxService?.pendingVoiceMessage = true
             } else if type.hasPrefix("custom_reminder") {
                 // Custom reminder — just open the app (no special action needed)
             } else {

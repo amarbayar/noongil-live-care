@@ -3,7 +3,9 @@ import FirebaseFirestore
 
 @MainActor
 final class VoiceMessageInboxService: ObservableObject {
+    static var pendingVoiceMessageFromNotification = false
     @Published private(set) var messages: [VoiceMessage] = []
+    @Published var pendingVoiceMessage = false
 
     private(set) var userId: String = ""
     private(set) var storageService: StorageService?
@@ -22,6 +24,14 @@ final class VoiceMessageInboxService: ObservableObject {
         self.storageService = storageService
         self.notificationService = notificationService
         startObserving()
+        drainPendingNotification()
+    }
+
+    func drainPendingNotification() {
+        if Self.pendingVoiceMessageFromNotification {
+            Self.pendingVoiceMessageFromNotification = false
+            pendingVoiceMessage = true
+        }
     }
 
     func fetchMessages() async {

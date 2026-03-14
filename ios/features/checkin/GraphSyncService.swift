@@ -150,11 +150,15 @@ final class GraphSyncService {
         }
 
         let iso8601 = ISO8601DateFormatter()
+        let localDateFmt = DateFormatter()
+        localDateFmt.dateFormat = "yyyy-MM-dd"
+        localDateFmt.timeZone = .current
         let checkInPayload = GraphIngestPayload.CheckInPayload(
             id: checkInId,
             userId: checkIn.userId,
             type: checkIn.type.rawValue,
             completedAt: iso8601.string(from: completedAt),
+            localDate: localDateFmt.string(from: completedAt),
             completionStatus: checkIn.completionStatus.rawValue,
             durationSeconds: checkIn.durationSeconds,
             mood: mood,
@@ -293,6 +297,7 @@ struct GraphIngestPayload: Codable {
         let userId: String
         let type: String
         let completedAt: String
+        let localDate: String?
         let completionStatus: String
         var durationSeconds: Int?
         var mood: MoodPayload?

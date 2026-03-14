@@ -88,6 +88,11 @@ struct ContentView: View {
                 selectedTab = .home
             }
         }
+        .onChange(of: voiceMessageInboxService.pendingVoiceMessage) { pending in
+            if pending {
+                selectedTab = .home
+            }
+        }
     }
 
     @ViewBuilder
@@ -139,6 +144,7 @@ struct ContentView: View {
         voicePipeline.graphSyncService = graphSync
         voicePipeline.memoryProjectionService = memoryProjection
         voicePipeline.consentService = consentService
+        voicePipeline.voiceMessageInboxService = voiceMessageInboxService
         voicePipeline.creativeAuthTokenProvider = { [weak authService] in
             try await authService?.currentUser?.getIDToken()
         }
@@ -155,6 +161,7 @@ struct ContentView: View {
             userId: uid
         )
         AppDelegate.checkInScheduleService = checkInScheduleService
+        AppDelegate.voiceMessageInboxService = voiceMessageInboxService
 
         // Pick up buffered notification that arrived before wiring
         checkInScheduleService.drainPendingNotification()

@@ -1,7 +1,7 @@
 import Foundation
 
 enum CreativeMediaType: String, Codable {
-    case image, video, music, animation
+    case image, video, music, animation, voiceMessage
 }
 
 enum CreativeAspect: String, CaseIterable {
@@ -19,6 +19,8 @@ enum CreativeAspect: String, CaseIterable {
             return [.mood, .style, .tempo, .instruments]
         case .animation:
             return [.subject, .mood, .style, .motion, .duration, .colorPalette, .tempo, .instruments]
+        case .voiceMessage:
+            return []
         }
     }
 }

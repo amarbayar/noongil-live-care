@@ -94,6 +94,16 @@ struct CreativeResultView: View {
             } else {
                 unavailableContent(message: "Animation ready, but preview is unavailable.")
             }
+
+        case .voiceMessage:
+            VStack(spacing: 16) {
+                Image(systemName: "waveform.badge.mic")
+                    .font(.system(size: 80))
+                    .foregroundColor(theme.primary)
+                Text("Voice Message")
+                    .font(.title2)
+                    .foregroundColor(theme.text)
+            }
         }
     }
 

@@ -13,6 +13,7 @@ struct CompanionHomeView: View {
     @EnvironmentObject var storageService: StorageService
     @EnvironmentObject var reportFlowCoordinator: ReportFlowCoordinator
     @EnvironmentObject var checkInScheduleService: CheckInScheduleService
+    @EnvironmentObject var voiceMessageInboxService: VoiceMessageInboxService
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -97,6 +98,9 @@ struct CompanionHomeView: View {
         }
         .onChange(of: checkInScheduleService.pendingCheckIn) { _ in
             handlePendingCheckIn()
+        }
+        .onChange(of: voiceMessageInboxService.pendingVoiceMessage) { _ in
+            handlePendingVoiceMessage()
         }
         .sheet(isPresented: $showReportShareSheet) {
             if let pdfData = reportFlowCoordinator.generatedPDFData {
@@ -323,6 +327,28 @@ struct CompanionHomeView: View {
         startSession()
     }
 
+    private func handlePendingVoiceMessage() {
+        guard voiceMessageInboxService.pendingVoiceMessage else { return }
+        voiceMessageInboxService.pendingVoiceMessage = false
+        guard !isSessionActive, canStartSession else { return }
+        voicePipeline.pendingVoiceMessageContext = buildVoiceMessageContext()
+        voicePipeline.proactiveGreeting = true
+        startSession()
+    }
+
+    private func buildVoiceMessageContext() -> String {
+        let unread = voiceMessageInboxService.messages.filter { $0.isUnread }
+        guard !unread.isEmpty else {
+            return "[Voice message notification tapped, but no unread messages found.]"
+        }
+        let summaries = unread.prefix(3).map { msg in
+            let sender = msg.caregiverName ?? "Caregiver"
+            let dur = Int(msg.durationSeconds)
+            return "From \"\(sender)\", \(dur)s, ID: \(msg.id ?? "unknown")"
+        }.joined(separator: "; ")
+        return "[User tapped a voice message notification. Unread voice messages: \(summaries). Tell the user about the message and ask if they want to listen. Use the play_voice_message tool with the messageId when they say yes.]"
+    }
+
     private func toggleSession() {
         if isSessionActive {
             stopSession()
@@ -378,6 +404,7 @@ struct CompanionHomeView: View {
                     extraTools += CreativeFlowManager.creativeToolDeclarations
                 }
                 extraTools += PhoneCameraService.toolDeclarations
+                extraTools += VoicePipeline.voiceMessageToolDeclarations
                 voicePipeline.defaultExtraTools = extraTools
 
                 // Always wire phone camera (not gated on glasses)

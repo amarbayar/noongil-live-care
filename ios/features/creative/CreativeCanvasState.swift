@@ -86,6 +86,8 @@ struct CreativeCanvasState: Equatable {
             return "Composing your music"
         case .animation:
             return "Building your animation"
+        case .voiceMessage:
+            return "Loading voice message"
         }
     }
 
@@ -99,6 +101,8 @@ struct CreativeCanvasState: Equatable {
             return "Music ready"
         case .animation:
             return "Animation ready"
+        case .voiceMessage:
+            return "Voice message"
         }
     }
 }

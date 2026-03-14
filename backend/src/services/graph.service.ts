@@ -305,6 +305,7 @@ export interface CheckInInput {
   userId: string;
   type: string;
   completedAt: string;  // ISO datetime
+  localDate?: string;   // YYYY-MM-DD in user's local timezone
   completionStatus: string;
   durationSeconds?: number;
   mood?: { score: number; description?: string };
@@ -480,7 +481,7 @@ export class GraphService {
       throw new Error('Missing check-in payload for graph ingestion');
     }
 
-    const date = checkIn.completedAt.split('T')[0];
+    const date = checkIn.localDate ?? checkIn.completedAt.split('T')[0];
     const session = this.getSession();
 
     try {
